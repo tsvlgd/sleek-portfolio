@@ -90,7 +90,8 @@
     nekoEl.style.width = '32px';
     nekoEl.style.height = '32px';
     nekoEl.style.position = 'fixed';
-    nekoEl.style.pointerEvents = 'none';
+    nekoEl.style.pointerEvents = 'auto';
+    nekoEl.style.cursor = 'pointer';
     nekoEl.style.imageRendering = 'pixelated';
     nekoEl.style.left = `${nekoPosX - 16}px`;
     nekoEl.style.top = `${nekoPosY - 16}px`;
@@ -103,9 +104,44 @@
     }
     nekoEl.style.backgroundImage = `url(${nekoFile})`;
 
+    // Make the cat change colors on click
+    let hue = 0;
+    nekoEl.addEventListener('click', () => {
+      hue = (hue + 45) % 360;
+      nekoEl.style.filter = hue === 0 ? 'none' : `hue-rotate(${hue}deg)`;
+      setSprite('alert', 0);
+      idleTime = 0;
+    });
+
+    // Make the cat draggable
+    let isDragging = false;
+    let dragOffsetX = 0;
+    let dragOffsetY = 0;
+
+    nekoEl.addEventListener('mousedown', (e) => {
+      isDragging = true;
+      dragOffsetX = e.clientX - nekoPosX;
+      dragOffsetY = e.clientY - nekoPosY;
+      setSprite('alert', 0);
+    });
+
+    document.addEventListener('mouseup', () => {
+      isDragging = false;
+    });
+
     document.body.appendChild(nekoEl);
 
     document.addEventListener('mousemove', function (event) {
+      if (isDragging) {
+        nekoPosX = event.clientX - dragOffsetX;
+        nekoPosY = event.clientY - dragOffsetY;
+        nekoEl.style.left = `${nekoPosX - 16}px`;
+        nekoEl.style.top = `${nekoPosY - 16}px`;
+        mousePosX = nekoPosX;
+        mousePosY = nekoPosY;
+        setSprite('alert', 0);
+        return;
+      }
       mousePosX = event.clientX;
       mousePosY = event.clientY;
     });
