@@ -8,7 +8,7 @@ export interface Project {
   github?: string;
   live: string;
   details: boolean;
-  projectDetailsPageSlug: string;
+  projectDetailsPageSlug?: string;
   isWorking: boolean;
 }
 

@@ -159,7 +159,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
         </div>
       </CardContent>
 
-      {project.details && (
+      {project.details && project.projectDetailsPageSlug && (
         <CardFooter className="flex justify-between p-6 pt-0">
           <div
             className={`flex items-center gap-1 rounded-md px-2 py-1 text-xs ${

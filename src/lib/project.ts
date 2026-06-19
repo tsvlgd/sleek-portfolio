@@ -150,21 +150,23 @@ export function getProjectNavigation(currentSlug: string): {
       : null;
 
   return {
-    previous: previousProject
-      ? {
-          title: previousProject.title,
-          slug: previousProject.projectDetailsPageSlug.replace(
-            '/projects/',
-            '',
-          ),
-        }
-      : null,
-    next: nextProject
-      ? {
-          title: nextProject.title,
-          slug: nextProject.projectDetailsPageSlug.replace('/projects/', ''),
-        }
-      : null,
+    previous:
+      previousProject && previousProject.projectDetailsPageSlug
+        ? {
+            title: previousProject.title,
+            slug: previousProject.projectDetailsPageSlug.replace(
+              '/projects/',
+              '',
+            ),
+          }
+        : null,
+    next:
+      nextProject && nextProject.projectDetailsPageSlug
+        ? {
+            title: nextProject.title,
+            slug: nextProject.projectDetailsPageSlug.replace('/projects/', ''),
+          }
+        : null,
   };
 }
 
