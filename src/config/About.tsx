@@ -1,26 +1,22 @@
-import Bun from '@/components/technologies/Bun';
-import JavaScript from '@/components/technologies/JavaScript';
-import MongoDB from '@/components/technologies/MongoDB';
-import NextJs from '@/components/technologies/NextJs';
+import Docker from '@/components/technologies/Docker';
+import FastAPI from '@/components/technologies/FastAPI';
 import NodeJs from '@/components/technologies/NodeJs';
 import PostgreSQL from '@/components/technologies/PostgreSQL';
-import Prisma from '@/components/technologies/Prisma';
+import Python from '@/components/technologies/Python';
 import ReactIcon from '@/components/technologies/ReactIcon';
 import TypeScript from '@/components/technologies/TypeScript';
 
 export const mySkills = [
-  <ReactIcon key="react" />,
-  <Bun key="bun" />,
-  <JavaScript key="javascript" />,
+  <Python key="python" />,
+  <FastAPI key="fastapi" />,
   <TypeScript key="typescript" />,
-  <MongoDB key="mongodb" />,
-  <NextJs key="nextjs" />,
-  <NodeJs key="nodejs" />,
+  <ReactIcon key="react" />,
   <PostgreSQL key="postgresql" />,
-  <Prisma key="prisma" />,
+  <NodeJs key="nodejs" />,
+  <Docker key="docker" />,
 ];
 
 export const about = {
-  name: 'Ramkrishna Swarnkar',
-  description: `I'm a Full Stack web developer and Open Source Contributor, I love building products to solve real-world problems. I'm specialized in building MVP's.`,
+  name: 'Mehfooj Alam',
+  description: `I'm an AI Engineer and backend systems builder. I build intelligence platforms, OSINT tools, and production AI applications. I ship by building, learn by doing.`,
 };

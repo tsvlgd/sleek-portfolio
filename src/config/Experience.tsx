@@ -1,22 +1,12 @@
 import AWS from '@/components/technologies/AWS';
-import BootStrap from '@/components/technologies/BootStrap';
-import Bun from '@/components/technologies/Bun';
-import CSS from '@/components/technologies/CSS';
-import ExpressJs from '@/components/technologies/ExpressJs';
-import Figma from '@/components/technologies/Figma';
-import Html from '@/components/technologies/Html';
-import JavaScript from '@/components/technologies/JavaScript';
+import Docker from '@/components/technologies/Docker';
+import FastAPI from '@/components/technologies/FastAPI';
 import MongoDB from '@/components/technologies/MongoDB';
-import NestJs from '@/components/technologies/NestJs';
-import NextJs from '@/components/technologies/NextJs';
 import NodeJs from '@/components/technologies/NodeJs';
 import PostgreSQL from '@/components/technologies/PostgreSQL';
-import Postman from '@/components/technologies/Postman';
-import Prisma from '@/components/technologies/Prisma';
+import Python from '@/components/technologies/Python';
 import ReactIcon from '@/components/technologies/ReactIcon';
-import TailwindCss from '@/components/technologies/TailwindCss';
 import TypeScript from '@/components/technologies/TypeScript';
-import Vercel from '@/components/technologies/Vercel';
 
 export interface Technology {
   name: string;
@@ -44,151 +34,28 @@ export interface Experience {
 export const experiences: Experience[] = [
   {
     isCurrent: true,
-    isBlur: true,
-    company: 'good day :3',
-    position: 'Founding Frontend Engineer',
-    location: 'United States (Remote)',
-    image: '/company/promote.png',
+    company: 'AiGeeks',
+    position: 'Software Engineer Intern',
+    location: 'Remote',
+    image: '/company/aigeeks.png',
     description: [
-      'Architected and developed the complete frontend infrastructure for the platform, a comprehensive solution for creating and managing promotional campaigns.',
-      'Led a comprehensive codebase refactoring initiative that improved maintainability, scalability, and development velocity across the entire platform.',
-      'Integrated and optimized backend API connections, implementing efficient data fetching strategies and error handling mechanisms.',
-      'Enhanced user experience and interface design through implementation of consistent design systems, accessibility standards, and performance optimizations.',
+      'Building a production-grade OSINT platform focused on entity intelligence, investigation workflows, and cross-source data aggregation.',
+      'Developing backend services, APIs, and data pipelines using Python, FastAPI, MERN, PostgreSQL, and Docker.',
+      'Designing scalable intelligence workflows, structured outputs, and reliable data processing systems for real-world investigations.',
+      'Collaborating on infrastructure, automation, and deployment architecture for high-availability backend services.',
     ],
-    startDate: 'August 2025',
+    startDate: 'May 2026',
     endDate: 'Present',
     technologies: [
       {
-        name: 'Next.js',
-        href: 'https://nextjs.org/',
-        icon: <NextJs />,
+        name: 'Python',
+        href: 'https://python.org/',
+        icon: <Python />,
       },
       {
-        name: 'Tailwind CSS',
-        href: 'https://tailwindcss.com/',
-        icon: <TailwindCss />,
-      },
-      {
-        name: 'TypeScript',
-        href: 'https://typescriptlang.org/',
-        icon: <TypeScript />,
-      },
-      {
-        name: 'React',
-        href: 'https://react.dev/',
-        icon: <ReactIcon />,
-      },
-      {
-        name: 'Figma',
-        href: 'https://figma.com/',
-        icon: <Figma />,
-      },
-      {
-        name: 'Vercel',
-        href: 'https://vercel.com/',
-        icon: <Vercel />,
-      },
-      {
-        name: 'AWS',
-        href: 'https://aws.amazon.com/',
-        icon: <AWS />,
-      },
-      {
-        name: 'Postman',
-        href: 'https://www.postman.com/',
-        icon: <Postman />,
-      },
-      {
-        name: 'Bun',
-        href: 'https://bun.sh/',
-        icon: <Bun />,
-      },
-    ],
-    website: '#',
-    github: '#',
-    x: '#',
-  },
-  {
-    isCurrent: false,
-    company: 'Upsurge Labs',
-    position: 'Backend Developer Intern',
-    location: 'Bangalore, India (On-Site)',
-    image: '/company/upsurge.png',
-    description: [
-      'Backend development for *Bhindi.io*, a flagship product of Upsurge Labs, focusing on core infrastructure and agent development.',
-      'Engineered and deployed multiple high-performance agents, enhancing product capabilities and user experience.',
-      'Testing agent functionality, authentication, automation, and system stability.',
-      'Streamlined development workflows by optimizing internal tools and maintaining detailed technical documentation.',
-    ],
-    startDate: 'June 2025',
-    endDate: 'July 2025',
-    technologies: [
-      {
-        name: 'NestJS',
-        href: 'https://nestjs.com/',
-        icon: <NestJs />,
-      },
-      {
-        name: 'Postman',
-        href: 'https://www.postman.com/',
-        icon: <Postman />,
-      },
-      {
-        name: 'TypeScript',
-        href: 'https://www.typescriptlang.org/',
-        icon: <TypeScript />,
-      },
-      {
-        name: 'Express',
-        href: 'https://expressjs.com/',
-        icon: <ExpressJs />,
-      },
-    ],
-    website: 'https://bhindi.io',
-    github: 'https://github.com/upsurgeio',
-    x: 'https://x.com/upsurgelabs',
-    linkedin: 'https://www.linkedin.com/company/upsurge-labs-pte-ltd',
-  },
-  {
-    isCurrent: false,
-    company: 'Prepeasy',
-    position: 'Founding Engineer',
-    location: 'Freelance',
-    image: '/company/prepeasy.png',
-    description: [
-      'Independently architected and developed end-to-end full-stack solutions for core product features, resulting in 95% cost reduction in AI interview services.',
-      'Single-handedly engineered and deployed a scalable AI Interview Platform, implementing real-time leaderboard analytics and automated personalized interview feedback system, reducing per-session costs from *$7* to *$0.30*.',
-      'Designed and developed comprehensive AI Resume Builder with automated optimization features, increasing user engagement by generating tailored resume recommendations and industry-specific summaries.',
-      'Built and integrated an AI-powered Cover Letter Generator with customizable templates, improving user application success rates through personalized content generation.',
-      'Engineered a complete Learning Management System (LMS) with an integrated Quiz Platform, featuring progress tracking and performance analytics.',
-    ],
-    startDate: 'April 2025',
-    endDate: 'June 2025',
-    technologies: [
-      {
-        name: 'Next.js',
-        href: 'https://nextjs.org/',
-        icon: <NextJs />,
-      },
-      {
-        name: 'Express',
-        href: 'https://expressjs.com/',
-        icon: <ExpressJs />,
-      },
-      {
-        name: 'TypeScript',
-        href: 'https://www.typescriptlang.org/',
-        icon: <TypeScript />,
-      },
-      {
-        name: 'React',
-        href: 'https://react.dev/',
-        icon: <ReactIcon />,
-      },
-      {
-        name: 'Prisma',
-        href: 'https://www.prisma.io/',
-        icon: <Prisma />,
+        name: 'FastAPI',
+        href: 'https://fastapi.tiangolo.com/',
+        icon: <FastAPI />,
       },
       {
         name: 'PostgreSQL',
@@ -196,90 +63,9 @@ export const experiences: Experience[] = [
         icon: <PostgreSQL />,
       },
       {
-        name: 'Vercel',
-        href: 'https://vercel.com/',
-        icon: <Vercel />,
-      },
-      {
-        name: 'AWS',
-        href: 'https://aws.amazon.com/',
-        icon: <AWS />,
-      },
-      {
-        name: 'Postman',
-        href: 'https://www.postman.com/',
-        icon: <Postman />,
-      },
-      {
-        name: 'Bun',
-        href: 'https://bun.sh/',
-        icon: <Bun />,
-      },
-    ],
-    website: 'https://prepeasy.ai',
-    github: 'https://github.com/prepeasy',
-  },
-  {
-    isCurrent: false,
-    company: 'Expelee',
-    position: 'SDE-1 (Full Stack) Intern',
-    location: 'Dubai, UAE (Remote)',
-    image: '/company/expelee.png',
-    description: [
-      '*Riskmitra (riskmitra.com)*: Built full-stack product with Next.js, Tailwind CSS, Framer Motion, shadcn, wallet integration, and GitBook integration.',
-      '*Core AI (core-ai.me)*: Designed and developed with Next.js, Tailwind CSS, Framer Motion, shadcn, focusing on scalability and modular UI design.',
-      '*GPU AI (gpuai.me)*: Integrated Three.js for interactive 3D elements alongside full-stack features from Core AI setup.',
-      '*Altranium (gaming.altranium.com)*: Developed immersive gaming platform using Three.js, MERN, Tailwind, and Framer Motion.',
-      '*Pars Network (parsnetwork.me)*: Engineered landing experience with MERN, Tailwind CSS, and GSAP for advanced animations and transitions.',
-      '*TEQ Network (teq-network.vercel.app)*: Designed and developed landing page using MERN, Tailwind CSS, and Web3 wallet integration.',
-    ],
-    startDate: 'Aug 2023',
-    endDate: 'April 2025',
-    technologies: [
-      {
-        name: 'Bun',
-        href: 'https://bun.sh/',
-        icon: <Bun />,
-      },
-      {
-        name: 'Express',
-        href: 'https://expressjs.com/',
-        icon: <ExpressJs />,
-      },
-      {
-        name: 'Figma',
-        href: 'https://figma.com/',
-        icon: <Figma />,
-      },
-      {
-        name: 'JavaScript',
-        href: 'https://javascript.com/',
-        icon: <JavaScript />,
-      },
-      {
-        name: 'MongoDB',
-        href: 'https://mongodb.com/',
-        icon: <MongoDB />,
-      },
-      {
-        name: 'Next.js',
-        href: 'https://nextjs.org/',
-        icon: <NextJs />,
-      },
-      {
-        name: 'Node.js',
-        href: 'https://nodejs.org/',
-        icon: <NodeJs />,
-      },
-      {
-        name: 'PostgreSQL',
-        href: 'https://postgresql.org/',
-        icon: <PostgreSQL />,
-      },
-      {
-        name: 'Prisma',
-        href: 'https://prisma.io/',
-        icon: <Prisma />,
+        name: 'Docker',
+        href: 'https://www.docker.com/',
+        icon: <Docker />,
       },
       {
         name: 'React',
@@ -292,68 +78,116 @@ export const experiences: Experience[] = [
         icon: <TypeScript />,
       },
       {
-        name: 'Postman',
-        href: 'https://postman.com/',
-        icon: <Postman />,
+        name: 'Node.js',
+        href: 'https://nodejs.org/',
+        icon: <NodeJs />,
       },
       {
-        name: 'Vercel',
-        href: 'https://vercel.com/',
-        icon: <Vercel />,
+        name: 'MongoDB',
+        href: 'https://mongodb.com/',
+        icon: <MongoDB />,
+      },
+    ],
+    website: 'https://aigeeks.ae',
+    linkedin: 'https://www.linkedin.com/company/aigeeks',
+  },
+  {
+    isCurrent: true,
+    company: 'FlyRank',
+    position: 'Backend AI Engineering Fellow',
+    location: 'Remote',
+    image: '/company/flyrank.png',
+    description: [
+      'Building retrieval-backed AI applications, structured-output workflows, and evaluation pipelines focused on reliability and correctness.',
+      'Designing API contracts, validation layers, and backend workflows for production-oriented AI systems.',
+      'Developing RAG, tool-calling, and agent-based workflows with an emphasis on grounding, failure handling, and auditability.',
+      'Creating evaluation datasets, quality rubrics, and verification processes to assess AI system performance and limitations.',
+    ],
+    startDate: 'Jul 2026',
+    endDate: 'Present',
+    technologies: [
+      {
+        name: 'Python',
+        href: 'https://python.org/',
+        icon: <Python />,
+      },
+      {
+        name: 'FastAPI',
+        href: 'https://fastapi.tiangolo.com/',
+        icon: <FastAPI />,
       },
       {
         name: 'AWS',
         href: 'https://aws.amazon.com/',
         icon: <AWS />,
       },
+      {
+        name: 'TypeScript',
+        href: 'https://typescriptlang.org/',
+        icon: <TypeScript />,
+      },
     ],
-    website: 'https://expelee.com',
-    x: 'https://x.com/0xExpelee',
-    linkedin: 'https://www.linkedin.com/company/expelee',
-    github: 'https://github.com/expeleeOfficial',
+    website: 'https://www.flyrank.com',
   },
   {
     isCurrent: false,
-    company: 'Flameloop',
-    position: 'Junior Frontend Developer',
-    location: 'Indore, India (offline)',
-    image: '/company/loop.png',
+    company: 'KultureHire',
+    position: 'Data Analyst',
+    location: 'Remote',
+    image: '/company/kulturehire.jpeg',
     description: [
-      'Developed and maintained web applications using HTML, CSS, and JavaScript.',
-      'Collaborated with cross-functional teams to deliver high-quality software on time.',
-      'Design & Developed multiple websites for clients.',
+      'Analyzed large-scale HR and recruitment datasets to uncover trends related to hiring, retention, and candidate performance.',
+      'Built structured analyses and dashboards to translate raw data into actionable insights for stakeholders.',
+      'Supported data-driven decision-making by identifying patterns and presenting findings in a clear, business-oriented manner.',
     ],
-    startDate: 'June 2023',
-    endDate: 'July 2023',
-    website: 'https://flameloop.com',
+    startDate: 'March 2025',
+    endDate: 'June 2025',
     technologies: [
       {
-        name: 'HTML',
-        href: 'https://html.com/',
-        icon: <Html />,
+        name: 'Python',
+        href: 'https://python.org/',
+        icon: <Python />,
       },
       {
-        name: 'CSS',
-        href: 'https://css.com/',
-        icon: <CSS />,
-      },
-      {
-        name: 'JavaScript',
-        href: 'https://javascript.com/',
-        icon: <JavaScript />,
-      },
-      {
-        name: 'Figma',
-        href: 'https://figma.com/',
-        icon: <Figma />,
-      },
-      {
-        name: 'BootStrap',
-        href: 'https://getbootstrap.com/',
-        icon: <BootStrap />,
+        name: 'PostgreSQL',
+        href: 'https://www.postgresql.org/',
+        icon: <PostgreSQL />,
       },
     ],
-    x: 'https://x.com/Flameloop149578',
-    linkedin: 'https://www.linkedin.com/company/flameloop',
+    website: 'https://kulturehire.com',
+    linkedin: 'https://www.linkedin.com/company/kulturehire',
+  },
+  {
+    isCurrent: false,
+    company: 'Open Source',
+    position: 'Contributor',
+    location: 'Global',
+    image: '/company/opensource.jpeg',
+    description: [
+      'Merged PRs across multiple open source projects, generating meaningful OSS impact.',
+      'Participated in Hacktoberfest and other community-driven open source events.',
+      'Engaged with developer communities and contributed to documentation, tooling, and codebases.',
+    ],
+    startDate: '2023',
+    endDate: 'Present',
+    technologies: [
+      {
+        name: 'Python',
+        href: 'https://python.org/',
+        icon: <Python />,
+      },
+      {
+        name: 'TypeScript',
+        href: 'https://typescriptlang.org/',
+        icon: <TypeScript />,
+      },
+      {
+        name: 'Node.js',
+        href: 'https://nodejs.org/',
+        icon: <NodeJs />,
+      },
+    ],
+    website: 'https://github.com/tsvlgd',
+    github: 'https://github.com/tsvlgd',
   },
 ];

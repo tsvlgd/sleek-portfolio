@@ -37,7 +37,7 @@ export function ProjectCard({ project }: ProjectCardProps) {
   // '/projects/sleek-portfolio' -> 'sleek-portfolio'. Keeps every project
   // uniquely identifiable in the dashboard with no per-project config.
   const projectId =
-    project.projectDetailsPageSlug.split('/').filter(Boolean).pop() ??
+    project.projectDetailsPageSlug?.split('/').filter(Boolean).pop() ??
     project.title;
 
   const trackProject = (
@@ -97,14 +97,27 @@ export function ProjectCard({ project }: ProjectCardProps) {
         <div className="space-y-4">
           {/* Project Header - Title and Icons */}
           <div className="flex items-center justify-between gap-4">
-            <Link
-              href={project.projectDetailsPageSlug}
-              onClick={() => trackProject('view_details')}
-            >
-              <h3 className="group-hover:text-primary text-xl leading-tight font-semibold hover:cursor-pointer">
-                {project.title}
-              </h3>
-            </Link>
+            {project.projectDetailsPageSlug ? (
+              <Link
+                href={project.projectDetailsPageSlug}
+                onClick={() => trackProject('view_details')}
+              >
+                <h3 className="group-hover:text-primary text-xl leading-tight font-semibold hover:cursor-pointer">
+                  {project.title}
+                </h3>
+              </Link>
+            ) : (
+              <a
+                href={project.link}
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => trackProject('visit_website')}
+              >
+                <h3 className="group-hover:text-primary text-xl leading-tight font-semibold hover:cursor-pointer">
+                  {project.title}
+                </h3>
+              </a>
+            )}
             <div className="flex items-center gap-2">
               <Tooltip>
                 <TooltipTrigger>
@@ -143,27 +156,6 @@ export function ProjectCard({ project }: ProjectCardProps) {
 
           {/* Description */}
           <p className="text-secondary line-clamp-3">{project.description}</p>
-
-          {/* Technologies */}
-          <div>
-            <h4 className="text-secondary mb-2 text-sm font-medium">
-              Technologies
-            </h4>
-            <div className="flex flex-wrap gap-2">
-              {project.technologies.map((technology, index) => (
-                <Tooltip key={index}>
-                  <TooltipTrigger>
-                    <div className="size-6 transition-all duration-300 hover:scale-120 hover:cursor-pointer">
-                      {technology.icon}
-                    </div>
-                  </TooltipTrigger>
-                  <TooltipContent>
-                    <p>{technology.name}</p>
-                  </TooltipContent>
-                </Tooltip>
-              ))}
-            </div>
-          </div>
         </div>
       </CardContent>
 

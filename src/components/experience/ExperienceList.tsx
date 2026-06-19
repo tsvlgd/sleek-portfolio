@@ -5,9 +5,13 @@ import { ExperienceCard } from './ExperienceCard';
 
 interface ExperienceListProps {
   experiences: Experience[];
+  defaultExpanded?: boolean;
 }
 
-export function ExperienceList({ experiences }: ExperienceListProps) {
+export function ExperienceList({
+  experiences,
+  defaultExpanded = false,
+}: ExperienceListProps) {
   if (experiences.length === 0) {
     return (
       <div className="py-8 text-center">
@@ -19,7 +23,11 @@ export function ExperienceList({ experiences }: ExperienceListProps) {
   return (
     <div className="flex flex-col gap-8">
       {experiences.map((experience: Experience) => (
-        <ExperienceCard key={experience.company} experience={experience} />
+        <ExperienceCard
+          key={experience.company}
+          experience={experience}
+          defaultExpanded={defaultExpanded}
+        />
       ))}
     </div>
   );

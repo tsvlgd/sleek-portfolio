@@ -12,24 +12,25 @@ export interface PageMeta {
 // Base site configuration
 export const siteConfig = {
   name: heroConfig.name,
-  title: 'Sleek Portfolio',
-  description: 'Sleek Portfolio Template by @Ramxcodes',
+  title: 'Mehfooj Alam – AI Engineer',
+  description:
+    'AI Engineer building intelligence platforms, OSINT tools, and production AI applications.',
   url: process.env.NEXT_PUBLIC_URL || 'http://localhost:3000',
   ogImage: '/meta/opengraph-image.png',
   author: {
     name: about.name,
-    twitter: '@ramxcodes',
-    github: 'ramxcodes',
-    linkedin: 'ramxcodes',
-    email: 'ramxcodes@gmail.com',
+    twitter: '@Mehfooj194108',
+    github: 'tsvlgd',
+    linkedin: 'mehfooj-a-b6aa0b243',
+    email: 'ml.mehfooj@gmail.com',
   },
   keywords: [
     'portfolio',
-    'developer',
-    'full-stack',
-    'react',
-    'nextjs',
-    'typescript',
+    'ai engineer',
+    'backend',
+    'python',
+    'fastapi',
+    'machine learning',
     'web development',
     heroConfig.name.toLowerCase(),
   ],
@@ -40,13 +41,7 @@ export const pageMetadata: Record<string, PageMeta> = {
   '/': {
     title: `${heroConfig.name} - ${heroConfig.title}`,
     description: `${about.description} Explore my projects, experience, and technical expertise.`,
-    keywords: [
-      'portfolio',
-      'developer',
-      'full-stack',
-      'web development',
-      'projects',
-    ],
+    keywords: ['portfolio', 'ai engineer', 'backend', 'python', 'projects'],
     ogImage: '/meta/hero.png',
     twitterCard: 'summary_large_image',
   },
@@ -57,7 +52,7 @@ export const pageMetadata: Record<string, PageMeta> = {
     description:
       "Get in touch with me for collaborations, projects, or opportunities. I'd love to hear from you!",
     keywords: ['contact', 'hire', 'collaboration', 'freelance', 'developer'],
-    ogImage: '/assets/logo.png',
+    ogImage: '/assets/me1.jpeg',
     twitterCard: 'summary',
   },
 
@@ -65,12 +60,12 @@ export const pageMetadata: Record<string, PageMeta> = {
   '/work-experience': {
     title: 'Work Experience - Professional Journey',
     description:
-      'Explore my professional work experience across different companies and roles in software development.',
+      'Explore my professional work experience across AI engineering, backend development, and data analysis.',
     keywords: [
       'work experience',
       'career',
       'professional',
-      'software developer',
+      'ai engineer',
       'employment history',
     ],
     ogImage: '/meta/work.png',
@@ -79,30 +74,24 @@ export const pageMetadata: Record<string, PageMeta> = {
 
   // Projects page
   '/projects': {
-    title: 'Projects - My Work & Projects Portfolio',
+    title: 'Projects - AI & ML Portfolio',
     description:
-      'Discover my projects and work across different technologies and domains. From web apps to mobile solutions.',
-    keywords: [
-      'projects',
-      'portfolio',
-      'web development',
-      'applications',
-      'software',
-    ],
+      'Discover my projects spanning AI systems, ML pipelines, NLP, deep learning, and backend engineering.',
+    keywords: ['projects', 'portfolio', 'machine learning', 'ai', 'software'],
     ogImage: '/meta/projects.png',
     twitterCard: 'summary_large_image',
   },
 
   // Blog page
   '/blog': {
-    title: 'Blog - Thoughts & Tutorials',
+    title: 'Blog - Thoughts & Writing',
     description:
-      'Read my thoughts, tutorials, and insights on engineering, programming, and web development.',
+      'Read my thoughts on AI engineering, backend systems, and building products.',
     keywords: [
       'blog',
       'tutorials',
-      'programming',
-      'web development',
+      'ai engineering',
+      'backend',
       'technical writing',
     ],
     ogImage: '/meta/blogs.png',
