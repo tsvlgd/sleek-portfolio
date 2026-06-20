@@ -12,7 +12,7 @@ export interface PageMeta {
 // Base site configuration
 export const siteConfig = {
   name: heroConfig.name,
-  title: 'Mehfooj Alam – AI Engineer',
+  title: 'welcome',
   description:
     'AI Engineer building intelligence platforms, OSINT tools, and production AI applications.',
   url: process.env.NEXT_PUBLIC_URL || 'http://localhost:3000',
