@@ -12,9 +12,8 @@ export interface PageMeta {
 // Base site configuration
 export const siteConfig = {
   name: heroConfig.name,
-  title: 'welcome',
-  description:
-    'AI Engineer building intelligence platforms, OSINT tools, and production AI applications.',
+  title: "Builder's logs",
+  description: "Builder's logs",
   url: process.env.NEXT_PUBLIC_URL || 'http://localhost:3000',
   ogImage: '/meta/opengraph-image.png',
   author: {
