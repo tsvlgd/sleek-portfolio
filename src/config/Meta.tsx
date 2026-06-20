@@ -38,7 +38,7 @@ export const siteConfig = {
 export const pageMetadata: Record<string, PageMeta> = {
   // Home page
   '/': {
-    title: `${heroConfig.name} - ${heroConfig.title}`,
+    title: siteConfig.title,
     description: `${about.description} Explore my projects, experience, and technical expertise.`,
     keywords: ['portfolio', 'ai engineer', 'backend', 'python', 'projects'],
     ogImage: '/meta/hero.png',
