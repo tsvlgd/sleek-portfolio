@@ -9,7 +9,7 @@ import {
   CommandList,
   CommandShortcut,
 } from '@/components/ui/command';
-import { Briefcase, FileText, FolderGit2, Home } from 'lucide-react';
+import { Briefcase, FileText, FolderGit2, Home, PenTool } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
 
@@ -44,6 +44,13 @@ const commands = [
         icon: FileText,
         href: '/resume',
         shortcut: 'R',
+      },
+      {
+        title: 'Go to Blog',
+        description: 'Read the latest blog posts',
+        icon: PenTool,
+        href: '/blog',
+        shortcut: 'B',
       },
     ],
   },
