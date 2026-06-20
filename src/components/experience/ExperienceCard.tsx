@@ -3,7 +3,7 @@
 import { type Experience } from '@/config/Experience';
 import { cn } from '@/lib/utils';
 import { ChevronDown } from 'lucide-react';
-import { Link } from 'next-view-transitions';
+import Link from 'next/link';
 import React, { useState } from 'react';
 
 import Skill from '../common/Skill';
@@ -39,7 +39,7 @@ export function ExperienceCard({
           <div className="flex flex-wrap items-center gap-2">
             <h3
               className={cn(
-                'text-lg font-bold',
+                'text-[18px] font-bold',
                 experience.isBlur ? 'blur-[5px]' : 'blur-none',
               )}
             >
@@ -109,11 +109,12 @@ export function ExperienceCard({
               />
             </button>
           </div>
-          <p className="text-secondary text-sm">{experience.position}</p>
+          <p className="text-secondary text-[14px] font-normal">
+            {experience.position}
+          </p>
         </div>
 
-        {/* Right: Dates + Location */}
-        <div className="text-secondary flex min-w-[88px] shrink-0 flex-col text-right text-sm md:min-w-[140px]">
+        <div className="text-secondary flex min-w-[88px] shrink-0 flex-col text-right text-[14px] md:min-w-[140px]">
           <p>
             {experience.startDate} –{' '}
             {experience.isCurrent ? 'Present' : experience.endDate}

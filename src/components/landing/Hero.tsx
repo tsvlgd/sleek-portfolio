@@ -1,7 +1,9 @@
+'use client';
+
 import { heroConfig, skillComponents, socialLinks } from '@/config/Hero';
-import { parseTemplate } from '@/lib/hero';
+import { Check, Copy } from 'lucide-react';
 import Image from 'next/image';
-import React from 'react';
+import React, { useState } from 'react';
 
 import Container from '../common/Container';
 import Skill from '../common/Skill';
@@ -9,78 +11,88 @@ import { TrackedLink } from '../common/TrackedLink';
 import { Tooltip, TooltipContent, TooltipTrigger } from '../ui/tooltip';
 
 export default function Hero() {
-  const { name, title, avatar, skills, description } = heroConfig;
+  const { name, title, avatar2 } = heroConfig;
+  const [copied, setCopied] = useState(false);
+  const [isFlipped, setIsFlipped] = useState(false);
 
-  const renderDescription = () => {
-    const parts = parseTemplate(description.template, skills);
-
-    return parts.map((part) => {
-      if (part.type === 'skill' && 'skill' in part && part.skill) {
-        const SkillComponent =
-          skillComponents[part.skill.component as keyof typeof skillComponents];
-        return (
-          <Skill key={part.key} name={part.skill.name} href={part.skill.href}>
-            <SkillComponent />
-          </Skill>
-        );
-      } else if (part.type === 'bold' && 'text' in part) {
-        return (
-          <b key={part.key} className="text-primary whitespace-pre-wrap">
-            {part.text}
-          </b>
-        );
-      } else if (part.type === 'text' && 'text' in part) {
-        return (
-          <span key={part.key} className="whitespace-pre-wrap">
-            {part.text}
-          </span>
-        );
-      }
-      return null;
-    });
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText('ml.mehfooj@gmail.com');
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
     <Container>
-      {/* Hero: Avatar + Name Row */}
+      {/* Hero: Avatar + Identity */}
       <div className="flex items-center gap-4">
-        <Image
-          src={avatar}
-          alt="hero"
-          width={96}
-          height={96}
-          className="size-24 rounded-full bg-blue-300 object-cover dark:bg-yellow-300"
-        />
-        <div className="flex flex-col">
-          <h1 className="text-lg font-bold whitespace-nowrap sm:text-2xl">
-            {name}
-          </h1>
-          <p className="text-secondary flex flex-wrap items-center gap-x-1 gap-y-1 text-base">
-            <span>{title}</span>
+        <div
+          className="group relative size-16 cursor-pointer [perspective:1000px] sm:size-20"
+          onClick={() => setIsFlipped(!isFlipped)}
+        >
+          <div
+            className={`relative h-full w-full transition-all duration-500 [transform-style:preserve-3d] group-hover:scale-105 ${isFlipped ? '[transform:rotateY(180deg)]' : ''}`}
+          >
+            <Image
+              src={avatar2}
+              alt="hero front"
+              fill
+              className="absolute inset-0 rounded-full bg-blue-300 object-cover ring-2 ring-white/10 [backface-visibility:hidden] dark:bg-yellow-300"
+            />
+            <Image
+              src="/assets/me1.jpeg" // Using placeholder image for back face
+              alt="hero back"
+              fill
+              className="absolute inset-0 [transform:rotateY(180deg)] rounded-full bg-blue-300 object-cover ring-2 ring-white/10 [backface-visibility:hidden] dark:bg-yellow-300"
+            />
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-1">
+          <h1 className="text-2xl font-bold tracking-normal">{name}</h1>
+          <div className="text-muted-foreground flex flex-wrap items-center gap-1.5 text-base">
+            <p>{title}</p>
             <span>·</span>
-            <a
-              href="mailto:ml.mehfooj@gmail.com"
-              className="hover:text-foreground transition-colors"
+            <button
+              onClick={handleCopyEmail}
+              className="hover:text-foreground inline-flex items-center gap-1.5 transition-colors"
+              aria-label="Copy email"
             >
               ml.mehfooj@gmail.com
-            </a>
-          </p>
+              {copied ? (
+                <Check className="size-3.5 text-emerald-500" />
+              ) : (
+                <Copy className="size-3.5" />
+              )}
+            </button>
+          </div>
         </div>
       </div>
 
       {/* Bio */}
-      <div className="text-secondary mt-6 flex flex-wrap items-center gap-x-1.5 gap-y-2 text-sm whitespace-pre-wrap">
-        {renderDescription()}
+      <p className="text-muted-foreground mt-6 text-base leading-relaxed">
+        I build AI applications, intelligence platforms, and backend systems
+        using
+      </p>
+      <div className="mt-2 flex flex-wrap items-center gap-1.5">
+        {heroConfig.skills.map((skill) => {
+          const SkillComponent =
+            skillComponents[skill.component as keyof typeof skillComponents];
+          return (
+            <Skill key={skill.name} name={skill.name} href={skill.href}>
+              <SkillComponent />
+            </Skill>
+          );
+        })}
       </div>
 
-      {/* Social Links */}
-      <div className="mt-4 flex flex-wrap gap-0.5">
+      {/* Social Links - tight row like ramx.in */}
+      <div className="mt-4 flex flex-wrap items-center gap-1">
         {socialLinks.map((link) => (
           <Tooltip key={link.name} delayDuration={0}>
             <TooltipTrigger asChild>
               <TrackedLink
                 href={link.href}
-                className="text-secondary hover:text-foreground flex items-center justify-center p-1.5 transition-colors"
+                className="text-muted-foreground hover:text-foreground hover:bg-muted flex size-8 items-center justify-center rounded-md transition-all"
                 track={{
                   name: 'external_link_click',
                   data: {

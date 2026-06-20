@@ -1,17 +1,19 @@
 import Github from '@/components/svgs/Github';
+import Instagram from '@/components/svgs/Instagram';
 import LinkedIn from '@/components/svgs/LinkedIn';
 import Mail from '@/components/svgs/Mail';
+import Medium from '@/components/svgs/Medium';
+import Pinterest from '@/components/svgs/Pinterest';
 import X from '@/components/svgs/X';
+import YouTube from '@/components/svgs/YouTube';
 import Docker from '@/components/technologies/Docker';
 import FastAPI from '@/components/technologies/FastAPI';
 import NodeJs from '@/components/technologies/NodeJs';
 import PostgreSQL from '@/components/technologies/PostgreSQL';
-// Technology Components
 import Python from '@/components/technologies/Python';
 import ReactIcon from '@/components/technologies/ReactIcon';
 import TypeScript from '@/components/technologies/TypeScript';
 
-// Component mapping for skills
 export const skillComponents = {
   Python: Python,
   FastAPI: FastAPI,
@@ -23,22 +25,21 @@ export const skillComponents = {
 };
 
 export const heroConfig = {
-  // Personal Information
   name: 'Mehfooj Alam',
-  title: 'engineer, builder, learner.',
+  title: 'Engineer · Builder · Learner',
   avatar: '/assets/me1.jpeg',
+  avatar2: '/assets/me2.jpeg',
 
-  // Skills Configuration
   skills: [
-    {
-      name: 'Python',
-      href: 'https://python.org/',
-      component: 'Python',
-    },
     {
       name: 'FastAPI',
       href: 'https://fastapi.tiangolo.com/',
       component: 'FastAPI',
+    },
+    {
+      name: 'Python',
+      href: 'https://python.org/',
+      component: 'Python',
     },
     {
       name: 'TypeScript',
@@ -57,17 +58,14 @@ export const heroConfig = {
     },
   ],
 
-  // Description Configuration
   description: {
     template:
-      'I build AI applications, intelligence platforms, and backend systems using {skills:0}, {skills:1}, {skills:2}, {skills:3} and {skills:4}. Focused on <b>shipping real products</b>, learning by doing, and building by default.',
+      'I build AI applications, intelligence platforms, and backend systems using {skills:0} {skills:1} {skills:2} {skills:3} {skills:4}',
   },
 
-  // Buttons Configuration
   buttons: [],
 };
 
-// Social Links Configuration
 export const socialLinks = [
   {
     name: 'X',
@@ -83,6 +81,26 @@ export const socialLinks = [
     name: 'Github',
     href: 'https://github.com/tsvlgd',
     icon: <Github />,
+  },
+  {
+    name: 'YouTube',
+    href: 'https://youtube.com/@mehfooj',
+    icon: <YouTube />,
+  },
+  {
+    name: 'Instagram',
+    href: 'https://instagram.com/mehfooj',
+    icon: <Instagram />,
+  },
+  {
+    name: 'Pinterest',
+    href: 'https://pinterest.com/mehfooj',
+    icon: <Pinterest />,
+  },
+  {
+    name: 'Medium',
+    href: 'https://medium.com/@mehfooj',
+    icon: <Medium />,
   },
   {
     name: 'Email',

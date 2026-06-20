@@ -7,7 +7,6 @@ import { SearchCommand } from '@/components/common/SearchCommand';
 import { ThemeProvider } from '@/components/common/ThemeProviders';
 import { generateMetadata as getMetadata } from '@/config/Meta';
 import ReactLenis from 'lenis/react';
-import { ViewTransitions } from 'next-view-transitions';
 
 import './globals.css';
 
@@ -19,27 +18,26 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <ViewTransitions>
-      <html lang="en" suppressHydrationWarning>
-        <body className={`font-hanken-grotesk antialiased`}>
-          <ThemeProvider
-            attribute="class"
-            defaultTheme="system"
-            enableSystem
-            disableTransitionOnChange
-          >
-            <ReactLenis root>
-              <Navbar />
-              <SearchCommand />
-              {children}
-              <OnekoCat />
-              <Quote />
-              <Footer />
-              <UmamiAnalytics />
-            </ReactLenis>
-          </ThemeProvider>
-        </body>
-      </html>
-    </ViewTransitions>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`font-hanken-grotesk antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ReactLenis root>
+            <Navbar />
+            <SearchCommand />
+            {children}
+            <OnekoCat />
+            <Quote />
+            <Footer />
+            <div className="from-background via-background/80 pointer-events-none fixed inset-x-0 bottom-0 h-32 bg-gradient-to-t to-transparent [mask-image:linear-gradient(to_top,black,transparent)] backdrop-blur-[2px]" />
+            <UmamiAnalytics />
+          </ReactLenis>
+        </ThemeProvider>
+      </body>
+    </html>
   );
 }

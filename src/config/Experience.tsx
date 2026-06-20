@@ -157,37 +157,4 @@ export const experiences: Experience[] = [
     website: 'https://kulturehire.com',
     linkedin: 'https://www.linkedin.com/company/kulturehire',
   },
-  {
-    isCurrent: false,
-    company: 'Open Source',
-    position: 'Contributor',
-    location: 'Global',
-    image: '/company/opensource.jpeg',
-    description: [
-      'Merged PRs across multiple open source projects, generating meaningful OSS impact.',
-      'Participated in Hacktoberfest and other community-driven open source events.',
-      'Engaged with developer communities and contributed to documentation, tooling, and codebases.',
-    ],
-    startDate: '2023',
-    endDate: 'Present',
-    technologies: [
-      {
-        name: 'Python',
-        href: 'https://python.org/',
-        icon: <Python />,
-      },
-      {
-        name: 'TypeScript',
-        href: 'https://typescriptlang.org/',
-        icon: <TypeScript />,
-      },
-      {
-        name: 'Node.js',
-        href: 'https://nodejs.org/',
-        icon: <NodeJs />,
-      },
-    ],
-    website: 'https://github.com/tsvlgd',
-    github: 'https://github.com/tsvlgd',
-  },
 ];

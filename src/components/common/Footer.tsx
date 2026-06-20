@@ -6,20 +6,20 @@ import { TrackedLink } from './TrackedLink';
 
 export default function Footer() {
   return (
-    <footer className="border-border mt-16 border-t">
-      <div className="container mx-auto max-w-2xl px-4 py-12">
-        <div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between sm:gap-8">
+    <footer className="mt-20">
+      <div className="container mx-auto max-w-2xl px-4 py-8">
+        <div className="flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between sm:gap-16">
           {/* Navigate */}
-          <div>
-            <h3 className="text-muted-foreground mb-3 text-xs font-medium tracking-wider uppercase">
+          <div className="flex-1">
+            <h3 className="text-muted-foreground mb-4 text-xs font-semibold tracking-wider uppercase">
               Navigate
             </h3>
-            <div className="flex flex-wrap gap-x-6 gap-y-1">
+            <div className="flex flex-wrap gap-x-6 gap-y-3">
               {navbarConfig.navItems.map((item) => (
                 <TrackedLink
                   key={item.label}
                   href={item.href}
-                  className="text-secondary hover:text-foreground text-sm transition-colors"
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors"
                   track={{
                     name: 'button_click',
                     data: { buttonId: item.label, section: 'footer' },
@@ -33,15 +33,15 @@ export default function Footer() {
 
           {/* Connect */}
           <div>
-            <h3 className="text-muted-foreground mb-3 text-xs font-medium tracking-wider uppercase">
+            <h3 className="text-muted-foreground mb-4 text-xs font-semibold tracking-wider uppercase">
               Connect
             </h3>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex max-w-[170px] flex-wrap gap-2">
               {socialLinks.map((link) => (
                 <TrackedLink
                   key={link.name}
                   href={link.href}
-                  className="border-border bg-background text-muted-foreground hover:bg-muted hover:text-foreground flex size-9 items-center justify-center rounded-lg border transition-colors"
+                  className="text-muted-foreground hover:text-foreground flex size-[38px] items-center justify-center rounded-[10px] border border-white/10 bg-white/[0.02] backdrop-blur-sm transition-all hover:bg-white/[0.08]"
                   track={{
                     name: 'external_link_click',
                     data: {
@@ -59,8 +59,8 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div className="border-border/20 mt-8 border-t pt-8">
-          <p className="text-muted-foreground text-xs">
+        <div className="border-border/40 mt-12 border-t pt-8">
+          <p className="text-muted-foreground text-sm">
             © {new Date().getFullYear()} Mehfooj Alam. All rights reserved.
           </p>
         </div>

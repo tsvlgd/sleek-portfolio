@@ -1,0 +1,26 @@
+---
+title: "Mastering Retrieval-Augmented Generation"
+description: "A deep dive into building production-ready RAG pipelines that don't hallucinate and actually retrieve what you need."
+date: "2026-05-20"
+readingTime: "7"
+isPublished: true
+tags: ["RAG", "Machine Learning", "Backend Engineering"]
+---
+
+Building a prototype RAG (Retrieval-Augmented Generation) app is easy. Getting it to work reliably in production is incredibly hard.
+
+## The Problem with Naive RAG
+
+Naive RAG simply chunks a document, embeds it, and performs a cosine similarity search against a user's query. The problem? Users don't search with vectors; they search with intent. Similarity search often misses the context, leading the LLM to hallucinate or say "I don't know."
+
+## Advanced Retrieval Strategies
+
+To fix this, we need to apply advanced techniques:
+
+1. **Query Expansion & Routing**: Use a small LLM to rewrite the user's query into multiple specific search terms.
+2. **Hybrid Search**: Combine vector search with traditional keyword search (BM25) to catch exact terminology.
+3. **Re-ranking**: Use a cross-encoder model to re-score the top 20 chunks based on actual relevance, not just similarity.
+
+## Grounding the Output
+
+Once we have the right chunks, we must enforce strict grounding. We prompt the model to cite its sources and use structured outputs to ensure it doesn't deviate from the provided context. By moving away from naive RAG towards engineered retrieval pipelines, we can build systems that businesses can actually trust.

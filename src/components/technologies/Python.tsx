@@ -1,5 +1,5 @@
 const Python = () => (
-  <svg viewBox="0 0 128 128" className="size-5">
+  <svg viewBox="0 0 128 128" className="size-4.5">
     <linearGradient
       id="python-original-a"
       gradientUnits="userSpaceOnUse"
