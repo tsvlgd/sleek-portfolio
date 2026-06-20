@@ -89,17 +89,17 @@ export const socialLinks = [
   },
   {
     name: 'Instagram',
-    href: 'https://instagram.com/mehfooj',
+    href: 'https://instagram.com/ml.mehfooj',
     icon: <Instagram />,
   },
   {
     name: 'Pinterest',
-    href: 'https://pinterest.com/mehfooj',
+    href: 'https://pinterest.com/ml.mehfooj',
     icon: <Pinterest />,
   },
   {
     name: 'Medium',
-    href: 'https://medium.com/@mehfooj',
+    href: 'https://medium.com/@ml.mehfooj',
     icon: <Medium />,
   },
   {
