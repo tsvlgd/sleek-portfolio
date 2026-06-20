@@ -89,12 +89,12 @@ export const experiences: Experience[] = [
       },
     ],
     website: 'https://aigeeks.ae',
-    linkedin: 'https://www.linkedin.com/company/aigeeks',
+    linkedin: 'https://www.linkedin.com/company/aigeeksae/',
   },
   {
     isCurrent: true,
-    company: 'FlyRank',
-    position: 'Backend AI Engineering Fellow',
+    company: 'FlyRankAI',
+    position: 'Backend & AI Eng.',
     location: 'Remote',
     image: '/company/flyrank.png',
     description: [
