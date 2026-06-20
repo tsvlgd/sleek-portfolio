@@ -4,17 +4,16 @@ export const quotes = [
     author: 'Sung Jin-Woo, Solo Leveling',
   },
   {
-    quote: `You have a right to perform your prescribed duty, but you are not
-            entitled to the fruits of actions.`,
-    author: 'Bhagavad Gita',
+    quote: `I have no fear of failure if I see things clearly.`,
+    author: 'Savvythelegend',
   },
   {
-    quote: `Man is made by his belief. As he believes, so he is.`,
-    author: 'Bhagavad Gita',
+    quote: `If you get on the wrong train, get off at the nearest station. The longer it takes you to get off, the more expensive the return trip will be.`,
+    author: 'Savvythelegend',
   },
   {
-    quote: `Arise, awake, and stop not till the goal is reached.`,
-    author: 'Katha Upanishad',
+    quote: `If you feel like you're losing everything, remember: trees lose their leaves every year, yet they still stand tall and wait for better days to come.`,
+    author: 'Savvythelegend',
   },
   {
     quote: `A man who is master of patience is master of everything else.`,
