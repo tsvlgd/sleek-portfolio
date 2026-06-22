@@ -44,18 +44,18 @@ export const githubConfig = {
   // Theme configuration for dark and light modes
   theme: {
     dark: [
-      'rgb(22, 27, 34)', // Very dark for no contributions
-      'rgb(14, 68, 41)', // Dark green
-      'rgb(0, 109, 50)', // Medium green
-      'rgb(38, 166, 65)', // Bright green
-      'rgb(57, 211, 83)', // Very bright green
+      '#161b22', // Very dark for no contributions
+      '#393939', // Dark gray
+      '#737373', // Medium gray
+      '#a5a5a5', // Light gray
+      '#ffffff', // White
     ],
     light: [
-      'rgb(235, 237, 240)', // Light gray
-      'rgb(155, 233, 168)', // Light green
-      'rgb(64, 196, 99)', // Medium green
-      'rgb(48, 161, 78)', // Dark green
-      'rgb(33, 110, 57)', // Very dark green
+      '#ebedf0', // Light gray (no contributions)
+      '#9ec9ff', // Light blue
+      '#539bf5', // Medium blue
+      '#1158c7', // Dark blue
+      '#053787', // Very dark blue
     ],
   },
 

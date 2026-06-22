@@ -71,40 +71,48 @@ export const socialLinks = [
     name: 'X',
     href: 'https://twitter.com/Mehfooj194108',
     icon: <X />,
+    hoverClass: 'hover:text-foreground',
   },
   {
     name: 'LinkedIn',
     href: 'https://www.linkedin.com/in/mehfooj-a-b6aa0b243',
     icon: <LinkedIn />,
+    hoverClass: 'hover:text-[#0A66C2]',
   },
   {
     name: 'Github',
     href: 'https://github.com/tsvlgd',
     icon: <Github />,
+    hoverClass: 'hover:text-foreground',
   },
   {
     name: 'YouTube',
     href: 'https://youtube.com/@mehfooj',
     icon: <YouTube />,
+    hoverClass: 'hover:text-[#FF0000]',
   },
   {
     name: 'Instagram',
     href: 'https://instagram.com/ml.mehfooj',
     icon: <Instagram />,
+    hoverClass: 'hover:text-[#E4405F]',
   },
   {
     name: 'Pinterest',
     href: 'https://pinterest.com/ml.mehfooj',
     icon: <Pinterest />,
+    hoverClass: 'hover:text-[#E60023]',
   },
   {
     name: 'Medium',
     href: 'https://medium.com/@ml.mehfooj',
     icon: <Medium />,
+    hoverClass: 'hover:text-foreground',
   },
   {
     name: 'Email',
     href: 'mailto:ml.mehfooj@gmail.com',
     icon: <Mail />,
+    hoverClass: 'hover:text-emerald-500',
   },
 ];

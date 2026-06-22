@@ -33,8 +33,8 @@ export default function RootLayout({
             <OnekoCat />
             <Quote />
             <Footer />
-            <div className="from-background via-background/80 pointer-events-none fixed inset-x-0 bottom-0 h-32 bg-gradient-to-t to-transparent [mask-image:linear-gradient(to_top,black,transparent)] backdrop-blur-[2px]" />
             <UmamiAnalytics />
+            <div className="from-background via-background/80 pointer-events-none fixed inset-x-0 bottom-0 h-32 bg-gradient-to-t to-transparent [mask-image:linear-gradient(to_top,black,transparent)] backdrop-blur-[2px]" />
           </ReactLenis>
         </ThemeProvider>
       </body>

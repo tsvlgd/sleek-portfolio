@@ -20,7 +20,7 @@ export function BlogCard({ post }: { post: BlogPostPreview }) {
         <h3 className="text-foreground text-base font-semibold">{title}</h3>
       </TrackedLink>
 
-      <p className="text-muted-foreground text-[13px] leading-relaxed">
+      <p className="text-muted-foreground text-sm leading-relaxed">
         {description}
       </p>
 
@@ -35,7 +35,7 @@ export function BlogCard({ post }: { post: BlogPostPreview }) {
         ))}
       </div>
 
-      <div className="text-muted-foreground mt-3 flex items-center justify-between text-[13px]">
+      <div className="text-muted-foreground mt-3 flex items-center justify-between text-sm tabular-nums">
         <div className="flex items-center gap-4">
           <div className="flex items-center gap-1.5">
             <Calender className="size-3.5 opacity-70" />

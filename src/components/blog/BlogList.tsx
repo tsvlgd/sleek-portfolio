@@ -11,8 +11,10 @@ export function BlogList({ posts, className = '' }: BlogListProps) {
   if (posts.length === 0) {
     return (
       <div className="flex min-h-[400px] flex-col items-center justify-center space-y-4 text-center">
-        <h2 className="text-2xl font-semibold">No blog posts found</h2>
-        <p className="text-muted-foreground">
+        <h2 className="text-foreground text-[20px] font-semibold">
+          No blog posts found
+        </h2>
+        <p className="text-muted-foreground text-sm">
           Check back later for new content!
         </p>
       </div>

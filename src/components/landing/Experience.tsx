@@ -11,7 +11,9 @@ export default function Experience() {
   return (
     <Container className="mt-10 flex flex-col items-center">
       <div className="w-full">
-        <h2 className="mb-4 text-xl font-bold">Experience</h2>
+        <h2 className="text-foreground mb-6 text-[20px] leading-7 font-bold tracking-tight">
+          Experience
+        </h2>
         <div className="flex flex-col gap-6">
           {visibleExperiences.map((experience) => (
             <ExperienceCard key={experience.company} experience={experience} />

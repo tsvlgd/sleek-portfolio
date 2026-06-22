@@ -42,7 +42,7 @@ export default function Navbar() {
                   key={item.label}
                   href={item.href}
                   className={cn(
-                    'hover:text-foreground px-3 py-1.5 text-sm transition-colors',
+                    'px-3 py-1.5 text-sm transition-colors hover:text-gray-800 dark:hover:text-[#E5E7EB]',
                     isActive
                       ? 'text-foreground font-medium'
                       : 'text-muted-foreground',

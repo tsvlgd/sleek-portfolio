@@ -1,4 +1,3 @@
-import AWS from '@/components/technologies/AWS';
 import Docker from '@/components/technologies/Docker';
 import FastAPI from '@/components/technologies/FastAPI';
 import MongoDB from '@/components/technologies/MongoDB';
@@ -91,6 +90,7 @@ export const experiences: Experience[] = [
     website: 'https://aigeeks.ae',
     linkedin: 'https://www.linkedin.com/company/aigeeksae/',
   },
+  /*
   {
     isCurrent: true,
     company: 'FlyRankAI',
@@ -129,6 +129,7 @@ export const experiences: Experience[] = [
     ],
     website: 'https://www.flyrank.com',
   },
+  */
   {
     isCurrent: false,
     company: 'KultureHire',

@@ -42,7 +42,9 @@ export function BlogPageClient({ initialPosts }: BlogPageClientProps) {
       <div className="space-y-10">
         {/* Header */}
         <div>
-          <h1 className="text-2xl font-bold">Blog</h1>
+          <h1 className="text-foreground text-[20px] leading-7 font-bold tracking-tight">
+            Blog
+          </h1>
         </div>
 
         {/* Blog Posts */}
