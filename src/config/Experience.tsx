@@ -117,11 +117,6 @@ export const experiences: Experience[] = [
         icon: <FastAPI />,
       },
       {
-        name: 'AWS',
-        href: 'https://aws.amazon.com/',
-        icon: <AWS />,
-      },
-      {
         name: 'TypeScript',
         href: 'https://typescriptlang.org/',
         icon: <TypeScript />,
