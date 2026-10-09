@@ -75,7 +75,7 @@ export const pageMetadata: Record<string, PageMeta> = {
 
   '/resume': {
     title: 'Resume · Mehfooj Alam',
-    description: `Professional summary, experience and technical skills for ${about.name}.`,
+    description: `One page resume for ${about.name}: agent runtimes, backend systems, and the work behind them.`,
     twitterCard: 'summary',
   },
 };

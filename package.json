@@ -13,6 +13,7 @@
     "format:all": "bun run format:prettierrc && bun run format:prettierrcjson",
     "prepare": "husky",
     "knip": "knip",
+    "build:resume": "bash scripts/build-resume.sh",
     "test-telegram": "bun src/validate/testTelegram.ts"
   },
   "lint-staged": {
@@ -65,6 +66,7 @@
     "next": "^15.5.18",
     "next-mdx-remote": "^6.0.0",
     "next-themes": "^0.4.6",
+    "pdfjs-dist": "^6.4.299",
     "react": "^19.0.0",
     "react-day-picker": "^9.7.0",
     "react-dom": "^19.0.0",

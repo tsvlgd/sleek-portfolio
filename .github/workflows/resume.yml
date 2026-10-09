@@ -1,0 +1,53 @@
+name: Resume PDF
+
+# Rebuilds the resume PDF whenever its LaTeX source changes, and commits the
+# result. The site serves the committed PDF rather than compiling at build time,
+# because Vercel has no LaTeX toolchain and installing one would add hundreds of
+# megabytes to every build.
+#
+# The source of truth is this repository, not ResumeVersions. ResumeVersions is
+# where the PDF is published for sharing; this is what the website renders.
+
+on:
+  push:
+    paths:
+      - 'src/data/resume/main.tex'
+      - '.github/workflows/resume.yml'
+      - 'scripts/build-resume.sh'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: resume-pdf
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install LaTeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends \
+            texlive-latex-base \
+            texlive-latex-recommended \
+            texlive-fonts-recommended
+
+      - name: Build PDF
+        run: ./scripts/build-resume.sh
+
+      - name: Commit if changed
+        run: |
+          if git diff --quiet -- public/resume; then
+            echo "PDF unchanged, nothing to commit."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add public/resume
+          git commit -m "chore(resume): rebuild PDF from main.tex"
+          git push

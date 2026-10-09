@@ -2,7 +2,10 @@
   "$schema": "https://unpkg.com/knip@5/schema.json",
   "entry": ["src/**/*.{ts,tsx,js,jsx}"],
   "project": ["**/*.{js,cjs,mjs,jsx,ts,cts,mts,tsx}!"],
-  "ignore": ["public/oneko/oneko.js"],
+  // The oneko script is third party and the pdf.js worker is a build artifact
+  // copied out of node_modules by scripts/build-resume.sh. Neither is imported,
+  // but both are needed at runtime, so knip is told to leave them alone.
+  "ignore": ["public/oneko/oneko.js", "public/pdf.worker.min.mjs"],
   "ignoreDependencies": [
     "eslint-config-next",
     "tailwindcss",

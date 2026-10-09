@@ -33,20 +33,34 @@ export async function GithubActivity() {
   const data = await getContributions(githubConfig.username);
 
   if (!data || data.days.length === 0) {
-    // Degraded state: still useful, never broken.
+    // Degraded state. Two very different causes land here, so say which one it
+    // is rather than showing a generic failure: a missing env var is a
+    // deployment problem the visitor cannot help with, while a failed fetch is
+    // transient and will resolve on the next revalidation.
+    const missingToken = !process.env.GITHUB_TOKEN;
+
     return (
-      <div className="flex items-center justify-between gap-4">
-        <p className="text-muted-foreground text-sm">
-          GitHub activity is unavailable right now.
+      <div className="border-border/70 rounded-lg border px-4 py-5">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <p className="text-foreground text-sm">
+            {missingToken
+              ? 'Contribution history is off.'
+              : 'GitHub activity could not be loaded.'}
+          </p>
+          <a
+            href={`https://github.com/${githubConfig.username}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-muted-foreground hover:text-accent font-mono text-xs transition-colors"
+          >
+            @{githubConfig.username}
+          </a>
+        </div>
+        <p className="text-muted-foreground/70 mt-2 text-[13px] leading-relaxed">
+          {missingToken
+            ? 'The graph needs a read only GitHub token on the server. Without one the profile link above is the whole story.'
+            : 'GitHub did not answer. This resolves itself within the hour.'}
         </p>
-        <a
-          href={`https://github.com/${githubConfig.username}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="text-foreground hover:text-accent border-border shrink-0 rounded-full border px-3 py-1 font-mono text-xs transition-colors"
-        >
-          github.com/{githubConfig.username}
-        </a>
       </div>
     );
   }

@@ -1,0 +1,298 @@
+%% ============================================================
+%%  MASTER RESUME TEMPLATE  |  Mehfooj Alam
+%%  Engine: pdfLaTeX  |  Page: single, US Letter
+%%
+%%  HOW TO USE
+%%  1. Change ONE word below: \rolepreset  (fullstack | backend | ai | custom)
+%%  2. A preset sets the headline, summary, skills rows, which jobs
+%%     are on, and which projects appear, in what order (\projorder).
+%%  3. To tune a role, edit its preset block, or use "custom".
+%%  4. To add a project: define \projMyNew in the PROJECT LIBRARY,
+%%     then add MyNew to \projorder in the presets you want.
+%%  5. To add a job: copy an experience block, add a \newif switch.
+%%  6. Keep it to one page: drop the last name in \projorder.
+%% ============================================================
+\documentclass[10pt,letterpaper]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{helvet}
+\renewcommand{\familydefault}{\sfdefault}
+\usepackage[top=0.26in, bottom=0.22in, left=0.55in, right=0.55in]{geometry}
+\usepackage{xcolor}
+\usepackage{hyperref}
+\usepackage{enumitem}
+\usepackage{tabularx}
+\usepackage{array}
+\usepackage{parskip}
+\usepackage{microtype}
+\usepackage{etoolbox}
+
+%% ============================================================
+%%  1. PICK THE ROLE  (fullstack | backend | ai | custom)
+%% ============================================================
+\newcommand{\rolepreset}{ai}
+
+%% ============================================================
+%%  2. PERSONAL DETAILS  (edit once)
+%% ============================================================
+\newcommand{\fullname}{Mehfooj Alam}
+\newcommand{\contactemail}{hi@mehfooj.dev}
+\newcommand{\linkedinurl}{https://www.linkedin.com/in/mehfooj-a-b6aa0b243/}
+\newcommand{\githuburl}{https://github.com/tsvlgd}
+\newcommand{\portfoliourl}{https://mehfooj.dev}
+\newcommand{\citytext}{New Delhi, India}
+
+%% ============================================================
+%%  3. SWITCHES  (jobs and the portfolio line)
+%% ============================================================
+\newif\ifFly    % FlyRank AI, backend trainee
+\newif\ifAiG    % AiGeeks, software engineer intern
+\newif\ifKult   % KultureHire, data analyst intern
+\newif\ifPort   % portfolio line under skills
+
+%% ============================================================
+%%  4. ROLE TEXT: DEFAULTS (full stack flavour)
+%% ============================================================
+\newcommand{\rolehead}{}
+\newcommand{\summarytext}{}
+\newcommand{\projorder}{Veda,Engine,LogIQ}
+\newcommand{\rowlang}{Python, TypeScript, JavaScript, SQL, Bash,\textit{(Exposure: Go)}}
+\newcommand{\rowlabel}{Backend \& Data}
+\newcommand{\rowfs}{FastAPI, Django, Node.js, Express, Celery, Redis, PostgreSQL, REST APIs}
+\newcommand{\rowai}{LLMs, RAG, Agentic Workflows, LangChain, LangGraph, PyTorch, LLM Fine-tuning, ML Pipelines}
+\newcommand{\rowops}{Docker, Podman, GitHub Actions, MLflow, CI/CD, GitHub API, Distributed Systems, Observability}
+
+%% AiGeeks variants: FS = full stack flavour, SYS = agent systems flavour
+\newcommand{\aigtitleFS}{Software Engineer Intern (Backend, Full Stack \& OSINT)}
+\newcommand{\aigtechFS}{TypeScript, React, Node.js, Python, PostgreSQL, MongoDB, Docker, CI/CD}
+\newcommand{\aigitemsFS}{%
+  \item Contributed across the stack to an intelligence platform (\href{https://intelfetch.dev/}{\color{myblue}Intelfetch}): \textbf{low latency}, deduplicated ingestion microservices for username, phone, email, website, and domain targets, plus frontend and API integration work.
+  \item Architected a 5 layer reconnaissance pipeline covering passive discovery, active resolution, web surface probing, and threat intelligence, with structured, schema validated (Zod) output delivery.
+  \item Researched and designed an initial lightweight \textbf{Agentic Orchestration} layer \textit{[idea similar to (\href{https://openosint.tech/}{\color{myblue}openosint.tech})]} using native Anthropic tool use APIs, enforcing deterministic tool execution to eliminate hallucinated outputs.
+  \item Led the architectural foundation and deployment of the end to end CI/CD infrastructure.
+}
+\newcommand{\aigtitleSYS}{Software Engineer Intern (Backend, Agent Systems \& OSINT)}
+\newcommand{\aigtechSYS}{TypeScript, Python, Anthropic Tool Use, Node.js, PostgreSQL, Docker, GitHub Actions, CI/CD}
+\newcommand{\aigitemsSYS}{%
+  \item Designed and built an initial lightweight \textbf{agentic orchestration layer} \textit{[idea similar to (\href{https://openosint.tech/}{\color{myblue}openosint.tech})]} on native \textbf{Anthropic tool use APIs}: the model only selects from registered tools, while execution follows \textbf{deterministic rules} that remove hallucinated outputs and constrain tool invocation.
+  \item Architected a 5 layer \textbf{OSINT reconnaissance pipeline} (passive discovery, active resolution, web surface probing, threat intelligence) delivering structured output through \textbf{Zod schema validation}.
+  \item Built \textbf{low latency}, deduplicated ingestion microservices for username, phone, email, website, and domain targets on the \href{https://intelfetch.dev/}{\color{myblue}Intelfetch} platform.
+  \item Led the architectural foundation and deployment of the end to end \textbf{CI/CD infrastructure} with Docker and GitHub Actions.
+}
+\let\aigtitle\aigtitleFS
+\let\aigtech\aigtechFS
+\let\aigitems\aigitemsFS
+
+%% ============================================================
+%%  5. ROLE PRESETS
+%% ============================================================
+%% ---- FULL STACK -------------------------------------------------
+\ifdefstring{\rolepreset}{fullstack}{%
+  \renewcommand{\rolehead}{Software Developer \textbar\ Full Stack AI Engineer \textbullet\ Backend \textbullet\ Agentic AI Systems}%
+  \renewcommand{\summarytext}{Software Developer building \textbf{full stack AI products} (Next.js, TypeScript) and \textbf{Python backends}: async APIs, PostgreSQL, Redis, Docker. Experience across backend microservices, OSINT data pipelines, CI/CD, and LLM features with structured outputs and provider fallbacks.}%
+  \renewcommand{\rowlabel}{Full Stack \& Backend}%
+  \renewcommand{\rowfs}{Next.js, React, FastAPI, Node.js, Express, Django, PostgreSQL, MongoDB, Redis, REST APIs}%
+  \renewcommand{\rowai}{LLMs, Agentic Workflows, Tool Calling, RAG, Structured Outputs, LangChain, LangGraph, PyTorch}%
+  \renewcommand{\projorder}{Veda,Engine,LogIQ,Churn}%
+  \Flytrue \AiGtrue \Kulttrue \Porttrue
+}{}
+
+%% ---- BACKEND ----------------------------------------------------
+\ifdefstring{\rolepreset}{backend}{%
+  \renewcommand{\rolehead}{Backend Engineer \textbar\ Python \textbullet\ Distributed Systems \textbullet\ Agentic AI Systems}%
+  \renewcommand{\summarytext}{Backend Engineer specialized in \textbf{async Python services}, \textbf{data pipelines}, and \textbf{LLM based systems}. Experience building microservices, OSINT ingestion, CI/CD automation, and agent runtimes.}%
+  \renewcommand{\rowfs}{FastAPI, Django, Node.js, Express, Redis, PostgreSQL, Alembic, REST APIs}%
+  \renewcommand{\projorder}{Engine,LogIQ,Issue,Churn}%
+  \let\aigtitle\aigtitleSYS \let\aigtech\aigtechSYS \let\aigitems\aigitemsSYS
+  \Flytrue \AiGtrue \Kulttrue \Portfalse
+}{}
+
+%% ---- AI SYSTEMS / AGENT RUNTIMES (used for Alan AI) -------------
+\ifdefstring{\rolepreset}{ai}{%
+  \renewcommand{\rolehead}{AI Systems \& Backend Engineer \textbar\ Agent Runtimes \textbullet\ Async Python \textbullet\ Developer Tools}%
+  \renewcommand{\summarytext}{Software Engineer building \textbf{agent runtimes and developer tools from first principles}: ReAct execution loops, tool calling, deterministic orchestration, and \textbf{async Python backends} (FastAPI, PostgreSQL, Redis, Docker). Experience with CI/CD infrastructure, log analysis pipelines, and evaluation environments for LLM agents.}%
+  \renewcommand{\rowlabel}{Backend \& Systems}%
+  \renewcommand{\rowfs}{FastAPI, Async Python, PostgreSQL, Redis, Alembic, Node.js, Express, REST APIs, CLI Tools}%
+  \renewcommand{\rowai}{Agent Runtimes, ReAct Loops, Tool Calling, Deterministic Orchestration, Evaluation Harnesses, Structured Outputs (Zod, Pydantic), RAG, LangChain, LangGraph, PyTorch}%
+  \renewcommand{\rowops}{Docker, Docker Compose, Podman, GitHub Actions, CI/CD, MLflow, Great Expectations, Distributed Systems, Observability}%
+  \renewcommand{\projorder}{Engine,LogIQ,RL,Churn}%
+  \let\aigtitle\aigtitleSYS \let\aigtech\aigtechSYS \let\aigitems\aigitemsSYS
+  \Flytrue \AiGtrue \Kulttrue \Portfalse
+}{}
+
+%% ---- CUSTOM (edit freely) ---------------------------------------
+\ifdefstring{\rolepreset}{custom}{%
+  \renewcommand{\rolehead}{YOUR HEADLINE HERE}%
+  \renewcommand{\summarytext}{YOUR SUMMARY HERE}%
+  \renewcommand{\projorder}{Engine,LogIQ,Veda}%
+  \Flytrue \AiGtrue \Kulttrue \Porttrue
+}{}
+
+%% ============================================================
+%%  ENGINE  (styling, leave as is)
+%% ============================================================
+\definecolor{myblue}{RGB}{43,120,228}
+\hypersetup{colorlinks=true, urlcolor=myblue, linkcolor=myblue, pdfborder={0 0 0}}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0pt}
+\pagestyle{empty}
+
+\newcommand{\ressection}[1]{%
+  \vspace{1.5pt}%
+  \begin{center}{\bfseries\color{myblue}\large #1}\end{center}%
+  \vspace{-8pt}%
+  {\color{myblue}\rule{\linewidth}{0.8pt}}%
+  \vspace{0.5pt}%
+}
+\newenvironment{rlist}{%
+  \begin{itemize}[leftmargin=1.3em, itemsep=0pt, topsep=0pt, parsep=0pt, label=\textbullet]%
+}{\end{itemize}}
+\newcommand{\entryheader}[2]{%
+  \noindent\begin{tabularx}{\linewidth}{@{}X r@{}}\textbf{#1} & \textbf{#2}\end{tabularx}\vspace{-1pt}%
+}
+\newcommand{\entrysub}[2]{%
+  \noindent\begin{tabularx}{\linewidth}{@{}X r@{}}#1 & #2\end{tabularx}\vspace{-1pt}%
+}
+\newcommand{\techstack}[1]{\vspace{0pt}\noindent{\footnotesize\itshape\color{black!65}Technologies Used: #1}\vspace{1pt}}
+\newcommand{\projheader}[1]{\noindent\textbf{#1}\vspace{-1pt}}
+\newcommand{\showproj}[1]{\csname proj#1\endcsname}
+
+%% ============================================================
+%%  PROJECT LIBRARY  (one macro per project, no blank lines inside)
+%%  Show a project by adding its name to \projorder in a preset.
+%% ============================================================
+\newcommand{\projEngine}{%
+\projheader{\href{https://github.com/tsvlgd/llm-engine}{LLM Engine | Terminal Native Coding Agent Runtime (versioned releases, ongoing)}}
+\begin{rlist}
+\item \textbf{Built} an \textbf{agent runtime} from first principles: a manual \textbf{ReAct execution loop}, a unified \textbf{tool registry}, and native provider \textbf{tool calling} with XML fallback, both normalized into one invocation format across Groq and OpenAI models.
+\item Exposed through a decoupled \textbf{FastAPI} gateway and a \textbf{terminal native} interface, with coding tools for file reading, directory listing, and shell execution.
+\item \textbf{Shipping} in versioned phases (v0.4.0 complete); next: \textbf{autocommit CLI}, interactive coding agent, \textbf{evaluation harness}, and persistent memory.
+\end{rlist}
+\vspace{1pt}
+}
+\newcommand{\projLogIQ}{%
+\projheader{\href{https://huggingface.co/spaces/imsavvylegend/NLP/tree/main}{LogIQ | Distributed CI/CD Log Analysis \& Fault Diagnostics Engine}}
+\begin{rlist}
+\item \textbf{Engineered} an async \textbf{FastAPI} service for automated \textbf{CI build failure diagnosis}, streaming logs through chunked buffers and background workers with \textbf{sub-300ms preprocessing latency} on large builds.
+\item \textbf{Designed} tiered failure routing (regex heuristics, \textbf{sentence embeddings}, LLM reasoning) to cut unnecessary inference; containerized with \textbf{Docker}, with fine tuned classifiers in development.
+\end{rlist}
+\vspace{1pt}
+}
+\newcommand{\projVeda}{%
+\projheader{\href{https://github.com/tsvlgd/veda-ai}{VedaAI | Full Stack AI Assessment Extraction \& Grading Workspace}}
+\begin{rlist}
+\item \textbf{Built} a full stack \textbf{Next.js (App Router) and TypeScript} app where teachers upload a question paper and a handwritten answer sheet; vision LLMs extract questions, map answers, and return page level answer regions shown in a dual pane review UI, deployed on Vercel.
+\item \textbf{Engineered} a reliable AI layer: \textbf{Zod validated} model output, latency aware \textbf{Gemini to Groq fallback} on provider outages, server actions for large uploads, and client side PDF rendering for exact highlight overlays; decisions logged as ADRs.
+\end{rlist}
+\vspace{1pt}
+}
+\newcommand{\projRL}{%
+\projheader{\href{https://github.com/tsvlgd/rl-agent}{RL Code Review Agent | OpenEnv Reinforcement Learning Environment}}
+\begin{rlist}
+\item \textbf{Engineered} a 3 stage RL curriculum for autonomous Python code review covering \textbf{PEP8, security, and algorithmic complexity}, with reward driven task progression.
+\item \textbf{Implemented} a sandboxed \textbf{evaluation harness} combining unit tests and \textbf{Ruff} analysis into reward signals; integrated Qwen inference with OpenEnv and Dockerized deployment.
+\end{rlist}
+\vspace{1pt}
+}
+\newcommand{\projChurn}{%
+\projheader{\href{https://huggingface.co/spaces/imsavvylegend/TelcoChurn-ML-Demo/tree/main}{Fullstack-ML | Pipeline Automation \& Infrastructure Platform}}
+\begin{rlist}
+\item \textbf{Architected} a reproducible ML pipeline with automated validation (\textbf{Great Expectations}) and experiment tracking (\textbf{MLflow}).
+\item \textbf{Automated} CI/CD with \textbf{GitHub Actions}, Docker builds, and deployment of a FastAPI/XGBoost inference service with a Gradio front end.
+\end{rlist}
+\vspace{1pt}
+}
+\newcommand{\projGPT}{%
+\projheader{\href{https://github.com/tsvlgd/gpt-from-scratch}{GPT From Scratch | Transformer Language Model in PyTorch}}
+\begin{rlist}
+\item \textbf{Implemented} a GPT style transformer from scratch in \textbf{PyTorch}, covering attention, positional encoding, training, and text generation.
+\end{rlist}
+\vspace{1pt}
+}
+\newcommand{\projIssue}{%
+\projheader{\href{https://github.com/tsvlgd/issue-tracker-api}{Issue Tracker API | Dockerized REST Backend}}
+\begin{rlist}
+\item \textbf{Built} a production style issue tracking API with \textbf{JWT auth (access and refresh tokens), role based access control}, Alembic migrations, Pydantic validation, and a Pytest suite, containerized with Docker.
+\end{rlist}
+\vspace{1pt}
+}
+%% ADD A NEW PROJECT: copy a block above, rename to \projMyNew, then add MyNew to \projorder.
+
+%% ============================================================
+%%  BODY
+%% ============================================================
+\begin{document}
+\fontsize{9.4}{11.1}\selectfont
+
+\begin{center}
+    {\LARGE\bfseries \href{\portfoliourl}{\color{myblue}\fullname} \\[2pt]}
+    {\large\bfseries \rolehead}\\[3pt]
+    \href{mailto:\contactemail}{\color{myblue}\contactemail}\ \textbar\ \href{\linkedinurl}{\color{myblue}LinkedIn}\ \textbar\ \href{\githuburl}{\color{myblue}GitHub}\ \textbar\ \href{\portfoliourl}{\color{myblue}Portfolio}\ \textbar\ \citytext
+\end{center}
+\vspace{1pt}
+
+\ressection{PROFESSIONAL SUMMARY}
+
+\noindent \summarytext
+
+\vspace{2pt}
+\ressection{TECHNICAL SKILLS}
+
+\noindent
+\textbf{Languages:} \rowlang \\
+\textbf{\rowlabel:} \rowfs \\
+\textbf{AI/ML \& Agent Systems:} \rowai \\
+\textbf{MLOps \& Infrastructure:} \rowops
+\ifPort\\
+\textbf{Portfolio:} \href{\portfoliourl}{\color{myblue}mehfooj.dev}, a Next.js and React site (work, projects, resume, blog) built and deployed independently.
+\fi
+\vspace{3pt}
+
+\ressection{PROFESSIONAL EXPERIENCE}
+
+%% ---------- FlyRank ----------
+\ifFly
+\entryheader{Backend Engineering Trainee}{Jul 2026 -- Present}
+\entrysub{\textcolor{myblue}{FlyRank AI}}{Remote}
+
+\begin{rlist}
+  \item Ship async REST APIs (\href{https://github.com/tsvlgd/flyrank-backend}{\color{myblue}repo}) in near daily commits with \textbf{FastAPI, PostgreSQL, and Redis}: connection pooling, Alembic migrations, request validation, search and filter endpoints, and a health check covering both datastores.
+  \item Containerized the stack with \textbf{Docker Compose} (migrations run on startup) and wrote an integration test suite (13 passing tests on an isolated test database); fixed a duplicate insert race condition with database level constraints.
+  \item Currently adding \textbf{JWT authentication} through an identity provider, protected routes, and \textbf{Redis backed rate limiting} middleware.
+\end{rlist}
+\techstack{Python, FastAPI, PostgreSQL, Redis, Docker Compose}
+\fi
+
+%% ---------- AiGeeks ----------
+\ifAiG
+\entryheader{\aigtitle}{May 2026 -- Jul 2026}
+\entrysub{\textcolor{myblue}{AiGeeks}}{Remote}
+
+\begin{rlist}
+  \aigitems
+\end{rlist}
+\techstack{\aigtech}
+\fi
+
+%% ---------- KultureHire ----------
+\ifKult
+\entryheader{Data Analyst Intern}{Mar 2025 -- Jul 2025}
+\entrysub{\textcolor{myblue}{KultureHire}}{Remote}
+
+\begin{rlist}
+  \item Built automated data-cleaning and ETL analysis pipelines; derived actionable performance metrics from large candidate datasets to improve product SLAs.
+\end{rlist}
+\techstack{Python, SQL, PostgreSQL}
+\fi
+
+\ressection{PROJECTS}
+
+\expandafter\forcsvlist\expandafter\showproj\expandafter{\projorder}
+
+\ressection{EDUCATION}
+
+\entryheader{Bachelor of Technology in Computer Science (Data Science)}{2023 -- 2027}
+\entrysub{St. Andrews Institute of Technology \& Management, Gurgaon \textbar\ MDU Rohtak}{}
+
+\end{document}
