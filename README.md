@@ -1,7 +1,5 @@
 # mehfooj.dev
 
-Personal site and portfolio for Mehfooj Alam, AI engineer.
-
 Live at [mehfooj.dev](https://mehfooj.dev).
 
 ## Stack
