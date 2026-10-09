@@ -54,8 +54,21 @@ fi
 
 # -interaction=nonstopmode so a missing package does not hang waiting for input.
 # -halt-on-error so a real failure stops instead of shipping a broken PDF.
-pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$BUILD" "$SRC" >/dev/null
-pdflatex -interaction=nonstopmode -halt-on-error -output-directory="$BUILD" "$SRC" >/dev/null
+#
+# The log is captured rather than discarded. A silent failure here is close to
+# impossible to diagnose from a CI run, because the only output is an exit code.
+compile() {
+  local log="$BUILD/pdflatex.log"
+  if ! pdflatex -interaction=nonstopmode -halt-on-error \
+       -output-directory="$BUILD" "$SRC" >"$log" 2>&1; then
+    echo "pdflatex failed. Last lines of the log:" >&2
+    tail -25 "$log" >&2
+    exit 1
+  fi
+}
+
+compile
+compile
 
 BUILT="$BUILD/main.pdf"
 if [[ ! -f "$BUILT" ]]; then

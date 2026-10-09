@@ -36,6 +36,10 @@ jobs:
       - name: Check shell script is executable
         run: chmod +x scripts/build-resume.sh
 
+      # main.tex needs helvet (psnfss), microtype and enumitem. The base and
+      # recommended bundles cover all three; texlive-latex-extra is not
+      # installed because nothing in the preamble needs it, and it is a
+      # multi gigabyte package.
       - name: Install LaTeX
         run: |
           sudo apt-get update
