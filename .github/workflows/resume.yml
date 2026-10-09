@@ -29,11 +29,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      # Required before build-resume.sh: the script refreshes the pdf.js worker
-      # out of node_modules, so without an install there is nothing to copy from.
-      - name: Install dependencies
-        run: bun install --frozen-lockfile
-
+      # No install step on purpose. The only thing the script takes from
+      # node_modules is the pdf.js worker, and that is already committed to
+      # public/. Installing here would need a lockfile this repo does not carry
+      # (bun.lock is authoritative) and would slow the job for no benefit.
       - name: Check shell script is executable
         run: chmod +x scripts/build-resume.sh
 

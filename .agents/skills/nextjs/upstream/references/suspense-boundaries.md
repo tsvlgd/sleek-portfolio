@@ -28,6 +28,10 @@ import { useSearchParams } from 'next/navigation';
 
 // Bad: Entire page becomes CSR
 
+// Bad: Entire page becomes CSR
+
+// Bad: Entire page becomes CSR
+
 export default function SearchBar() {
   const searchParams = useSearchParams();
   return <div>Query: {searchParams.get('q')}</div>;
@@ -59,6 +63,12 @@ Requires Suspense boundary when route has dynamic parameters.
 'use client';
 
 import { usePathname } from 'next/navigation';
+
+// In dynamic route [slug]
+// Bad: No Suspense
+
+// In dynamic route [slug]
+// Bad: No Suspense
 
 // In dynamic route [slug]
 // Bad: No Suspense

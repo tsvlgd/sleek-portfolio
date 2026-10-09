@@ -17,17 +17,21 @@ BUILD="$ROOT/.resume-build"
 OUT="$ROOT/public/resume/mehfooj-alam-resume.pdf"
 
 # The pdf.js worker is fetched by the browser at runtime from a fixed URL, so it
-# cannot live in node_modules. It is copied here rather than committed from a
-# manual step, which means the version always matches the installed pdfjs-dist
-# instead of drifting from it.
+# cannot stay in node_modules. It is committed to public/ and refreshed from the
+# installed package when node_modules is present, which keeps it in step with the
+# pdfjs-dist version the site actually loads.
+#
+# The refresh is best effort on purpose. CI checks out a bare tree with no
+# install, and the committed worker is already correct there; failing the build
+# over a copy that is not needed would break the pipeline for no gain.
 WORKER_SRC="$ROOT/node_modules/pdfjs-dist/build/pdf.worker.min.mjs"
 WORKER_OUT="$ROOT/public/pdf.worker.min.mjs"
 
 copy_worker() {
-  [[ -f "$WORKER_SRC" ]] || {
-    echo "error: $WORKER_SRC not found. Run 'bun install' first." >&2
-    exit 1
-  }
+  if [[ ! -f "$WORKER_SRC" ]]; then
+    echo "skipping worker refresh: node_modules absent, using the committed copy"
+    return 0
+  fi
   if [[ ! -f "$WORKER_OUT" ]] || ! cmp -s "$WORKER_SRC" "$WORKER_OUT"; then
     cp "$WORKER_SRC" "$WORKER_OUT"
     echo "refreshed public/pdf.worker.min.mjs from the installed pdfjs-dist"
