@@ -1,6 +1,12 @@
 export interface NavItem {
   label: string;
   href: string;
+  /**
+   * Absolute URL. Renders as a plain anchor and leaves the app, so it is not a
+   * client transition and `usePathname` cannot mark it active. Needed for the
+   * resume, which lives on its own host.
+   */
+  external?: boolean;
 }
 
 /**
@@ -19,11 +25,16 @@ export const navbarConfig = {
   /**
    * No "Home" entry: the `~/ mehfooj` mark on the left already links to the
    * root, so a Home item next to it would be a second control for one target.
+   *
+   * Resume points at its own host rather than at /resume. That subdomain serves
+   * the resume and nothing else, and it is the address worth handing to a
+   * recruiter, who will read resume.mehfooj.dev as the canonical one rather than
+   * as a route inside a site they then have to navigate.
    */
   navItems: [
     { label: 'Work', href: '/work-experience' },
     { label: 'Projects', href: '/projects' },
-    { label: 'Resume', href: '/resume' },
+    { label: 'Resume', href: 'https://resume.mehfooj.dev', external: true },
     { label: 'Contact', href: '/contact' },
   ] as NavItem[],
 };

@@ -68,8 +68,15 @@ export function CommandPalette({
   const entries: PaletteEntry[] = [
     ...navbarConfig.navItems.map((item) => ({
       label: item.label,
-      hint: 'page',
-      perform: go(item.href),
+      // The resume lives on another host, so routing through the client router
+      // would only produce a failed push. Open it the way the header does.
+      hint: item.external ? 'external' : 'page',
+      perform: item.external
+        ? () => {
+            onOpenChange(false);
+            window.open(item.href, '_blank', 'noopener,noreferrer');
+          }
+        : go(item.href),
     })),
     ...socialLinks.map((link) => ({
       label: link.name,

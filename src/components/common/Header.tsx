@@ -1,6 +1,6 @@
 'use client';
 
-import { navbarConfig } from '@/config/Navbar';
+import { NavItem, navbarConfig } from '@/config/Navbar';
 import { cn } from '@/lib/utils';
 import { Menu, Search, X } from 'lucide-react';
 import Link from 'next/link';
@@ -53,8 +53,49 @@ export default function Header() {
     setMobileOpen(false);
   }, [pathname]);
 
-  const isActive = (href: string) =>
-    href === '/' ? pathname === '/' : pathname.startsWith(href);
+  const isActive = (item: NavItem) =>
+    item.external
+      ? false
+      : item.href === '/'
+        ? pathname === '/'
+        : pathname.startsWith(item.href);
+
+  /**
+   * One nav entry.
+   *
+   * External items render as a plain anchor, because `next/link` on an absolute
+   * URL does a full page load to a different origin anyway while still running
+   * the client router's intercept logic against a URL it does not own. They can
+   * never be active: `usePathname` only ever returns a path, and the resume
+   * lives on another host.
+   */
+  const NavLink = ({ item, active }: { item: NavItem; active: boolean }) => {
+    const className =
+      'group text-muted-foreground hover:text-foreground shrink-0 text-sm transition-colors';
+
+    if (item.external) {
+      return (
+        <a
+          href={item.href}
+          className={className}
+          rel="noopener noreferrer"
+          target="_blank"
+        >
+          <RollingLabel label={item.label} active={false} />
+        </a>
+      );
+    }
+
+    return (
+      <Link
+        href={item.href}
+        className={className}
+        aria-current={active ? 'page' : undefined}
+      >
+        <RollingLabel label={item.label} active={active} />
+      </Link>
+    );
+  };
 
   return (
     <>
@@ -65,13 +106,15 @@ export default function Header() {
         <div className="mx-auto flex h-14 max-w-3xl items-center justify-between gap-4 px-4">
           <div className="flex min-w-0 items-center gap-5">
             {/*
-              On mobile the breadcrumb is redundant next to a hamburger that
-              already lists every page, and at this width it collides with the
-              theme toggle. It only appears from sm up.
+              Visible at every width, including mobile. It was hidden below sm
+              on the assumption that the hamburger covered it, but the hamburger
+              only appears once opened, so on a phone there was no way back to
+              the home page from any other route without opening a menu first.
+              At 390px this still fits beside the theme toggle and hamburger.
             */}
             <Link
               href="/"
-              className="text-muted-foreground hover:text-foreground hidden shrink-0 items-center gap-1 text-sm font-semibold tracking-tight transition-colors sm:flex"
+              className="text-muted-foreground hover:text-foreground flex shrink-0 items-center gap-1 text-sm font-semibold tracking-tight transition-colors"
               aria-label="Mehfooj Alam, home"
             >
               <span aria-hidden="true" className="font-normal opacity-60">
@@ -84,17 +127,7 @@ export default function Header() {
                 rather than stacking the list vertically. */}
             <nav className="hidden min-w-0 shrink items-center gap-4 sm:flex lg:gap-6">
               {navbarConfig.navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="group text-muted-foreground hover:text-foreground shrink-0 text-sm transition-colors"
-                  aria-current={isActive(item.href) ? 'page' : undefined}
-                >
-                  <RollingLabel
-                    label={item.label}
-                    active={isActive(item.href)}
-                  />
-                </Link>
+                <NavLink key={item.href} item={item} active={isActive(item)} />
               ))}
             </nav>
           </div>
@@ -135,21 +168,54 @@ export default function Header() {
         {mobileOpen ? (
           <div className="border-border mx-auto max-w-3xl border-t px-4 pb-3 sm:hidden">
             <nav className="grid grid-cols-2 gap-1 pt-3">
-              {navbarConfig.navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className={cn(
-                    'hover:bg-muted rounded-lg px-3 py-2.5 text-sm transition-colors',
-                    isActive(item.href)
-                      ? 'text-foreground font-medium'
-                      : 'text-muted-foreground',
-                  )}
-                  aria-current={isActive(item.href) ? 'page' : undefined}
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {/*
+                Home leads the mobile menu too. The mark in the bar is the
+                primary control, but the menu is where someone looks for a full
+                list of destinations, and leaving the root out of it made the
+                omission inconsistent rather than deliberate.
+              */}
+              <Link
+                href="/"
+                onClick={() => setMobileOpen(false)}
+                className={cn(
+                  'hover:bg-muted rounded-lg px-3 py-2.5 text-sm transition-colors',
+                  pathname === '/'
+                    ? 'text-foreground font-medium'
+                    : 'text-muted-foreground',
+                )}
+                aria-current={pathname === '/' ? 'page' : undefined}
+              >
+                Home
+              </Link>
+              {navbarConfig.navItems.map((item) => {
+                const className = cn(
+                  'hover:bg-muted rounded-lg px-3 py-2.5 text-sm transition-colors',
+                  isActive(item)
+                    ? 'text-foreground font-medium'
+                    : 'text-muted-foreground',
+                );
+
+                return item.external ? (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    className={className}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={className}
+                    aria-current={isActive(item) ? 'page' : undefined}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
             </nav>
             <button
               onClick={() => {

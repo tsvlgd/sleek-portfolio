@@ -14,15 +14,27 @@ export default function Footer() {
           <div>
             <p className="micro-label">Navigate</p>
             <nav className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5">
-              {navbarConfig.navItems.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {navbarConfig.navItems.map((item) =>
+                item.external ? (
+                  <a
+                    key={item.href}
+                    href={item.href}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                    className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+                  >
+                    {item.label}
+                  </a>
+                ) : (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+                  >
+                    {item.label}
+                  </Link>
+                ),
+              )}
             </nav>
           </div>
 
