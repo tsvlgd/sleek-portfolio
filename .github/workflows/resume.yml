@@ -36,16 +36,17 @@ jobs:
       - name: Check shell script is executable
         run: chmod +x scripts/build-resume.sh
 
-      # main.tex needs helvet (psnfss), microtype and enumitem. The base and
-      # recommended bundles cover all three; texlive-latex-extra is not
-      # installed because nothing in the preamble needs it, and it is a
-      # multi gigabyte package.
+      # main.tex loads enumitem, which lives in texlive-latex-extra rather than the
+      # recommended bundle. Installing the extra bundle is the cost of that one
+      # package; the alternative is vendoring the .sty file, which would then
+      # need tracking against upstream.
       - name: Install LaTeX
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends \
             texlive-latex-base \
             texlive-latex-recommended \
+            texlive-latex-extra \
             texlive-fonts-recommended
 
       - name: Build PDF
