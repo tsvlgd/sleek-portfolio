@@ -1,0 +1,80 @@
+---
+title: 'OSINT Engine'
+description: 'A modular async pipeline that resolves a human target into a verified domain, enriches it with technical and regulatory records, and emits Markdown, JSON or PDF reports.'
+tagline: 'Automated entity discovery, disambiguation and reporting'
+period: '2026'
+role: 'Author'
+stack: ['Python', 'asyncio', 'Pydantic', 'CLI', 'Reportlab']
+status: 'live'
+github: 'https://github.com/tsvlgd/osint-engine'
+live: 'https://osint-prototype.streamlit.app/'
+featured: true
+challenges: [
+  'Entity disambiguation from noisy search results',
+  'False-positive filtering',
+  'Concurrency without losing ordering',
+]
+learnings: [
+  'The domain extraction step is the whole problem',
+  'Confidence scoring beats source trust',
+  'Make it a CLI and integration is a subprocess',
+]
+isPublished: true
+---
+
+## Overview
+
+Given a name like a company or a person, the engine discovers who that entity
+actually is, finds its primary domain, and then enriches that domain with
+technical and regulatory signals. It ships as an installable CLI
+(`pip install -e .` gives you `osint-fetch`) with an optional Streamlit interface
+on top.
+
+## How it works
+
+Four phases, orchestrated with `asyncio`:
+
+1. **Social discovery** — a Google-dorking adapter pulls public profiles, sites
+   and mentions.
+2. **Domain extraction** — the social results are parsed for a domain candidate,
+   checked against a recognised TLD allow-list, and rejected if they belong to a
+   major platform (`linkedin.com`, `github.com`, `t.co`, and so on).
+3. **Technical and regulatory** — only once a domain is confirmed does the
+   technical adapter run GitHub repository search and WHOIS lookups, while a
+   second adapter queries a corporate registry. These two run concurrently under
+   `asyncio.gather`.
+4. **Analysis and scoring** — records get risk scores and a confidence pass, and
+   anything under 0.5 is dropped as a false positive.
+
+Providers sit behind a `BaseAdapter` abstract class with an async `fetch` and a
+`normalize_record` helper that produces a typed `IntelligenceRecord` via Pydantic.
+Swapping a source means writing one adapter; the engine does not know the
+difference.
+
+Scoring is deliberately crude and source-specific. WHOIS records mentioning
+leaked credentials score +10; a `clienttransferprohibited` status scores +1;
+dissolved or struck-off corporate entities score +5. Social records that share
+no term with the query lose 0.5 confidence and usually fall below the cut.
+
+Output is `--json` for machine consumers, Markdown or a styled PDF written to
+`reports/`.
+
+## What made it non-trivial
+
+- Name-to-domain resolution is a heuristic problem. Search snippets contain social
+  links, aggregator pages and unrelated lookalikes; getting this wrong sends
+  every downstream scan at the wrong entity.
+- `aiohttp`, WHOIS and the corporate registry have wildly different latency
+  profiles, so serialising them wastes most of the request.
+- A shared adapter interface only pays off if records are normalised at the edge,
+  not after collection.
+
+## What I learned
+
+- Most of the engineering value is in the filter, not the fetch. Raw search
+  output is cheap and unreliable; scoring is what makes it usable.
+- Confidence as a mutable field on the record beats a separate trust ranking per
+  source, because different sources need different penalties for the same
+  failure mode.
+- Shipping the CLI first made the integration story trivial: another service
+  spawns the binary with `--json` and parses stdout.

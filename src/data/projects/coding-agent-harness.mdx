@@ -1,0 +1,69 @@
+---
+title: 'Claude Code Harness'
+description: 'A terminal-native coding agent runtime built from first principles: a manual ReAct loop, a unified tool registry, and one invocation format normalised across Groq and OpenAI models.'
+tagline: 'Terminal-native coding agent runtime'
+period: '2026 — in progress'
+role: 'Author'
+stack: ['Python', 'FastAPI', 'Groq', 'OpenAI', 'Tool calling']
+status: 'building'
+featured: true
+challenges: [
+  'Normalising tool calls across providers',
+  'Keeping the agent loop explicit',
+  'Separating the runtime from the interface',
+]
+learnings: [
+  'A hand-written loop is the fastest way to understand a framework',
+  'One invocation shape beats two provider code paths',
+]
+isPublished: true
+---
+
+## Overview
+
+A coding agent runtime written from first principles rather than assembled on top
+of an agent framework. The goal is a terminal-native agent that can read files,
+list directories and run shell commands, driven by a loop I can read end to end.
+It ships in phases; v0.4 is complete.
+
+## How it works
+
+The execution loop is manual ReAct: reason, act, observe, repeat. There is no
+orchestration abstraction sitting between the model and the tools, so every step
+that a framework would make on my behalf is visible in the code.
+
+Tools are registered in a single registry rather than declared per provider. Each
+entry declares its name, parameters and a callable. That registry is what both
+the Groq path and the OpenAI path consume, so adding a capability is one entry,
+not two.
+
+Provider differences are absorbed at the boundary. Groq and OpenAI are both called
+with native tool calling where the model supports it; models that do not get an
+XML fallback. Either way the result is normalised into one internal invocation
+format before the loop sees it, which means the loop, the registry and the
+observation handling are written once.
+
+The runtime sits behind a decoupled FastAPI gateway, and the terminal interface
+is a separate consumer of that gateway. Swapping the surface — CLI today,
+something else later — is a client change, not a rewrite of the agent.
+
+## What made it non-trivial
+
+- Native tool calling and XML-parsed tool calling behave differently in edge
+  cases. Normalising them into one shape was the bulk of the work.
+- Keeping the loop explicit means owning the termination conditions, the error
+  paths and what happens when a tool call comes back malformed.
+- Shipping in phases means deciding what a partial release can honestly claim.
+
+## What I learned
+
+- Writing the ReAct loop by hand is what makes the framework-free approach pay
+  off. There is no magic to give up; there is only bookkeeping to own.
+- Provider portability is mostly a normalisation problem, not a capability
+  problem.
+- Decoupling the gateway from the interface early meant the CLI stayed thin.
+
+## Status
+
+Still in progress. There is no public repository yet, so nothing here is
+independently verifiable.

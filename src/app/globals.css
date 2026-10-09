@@ -1,0 +1,442 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, SFMono-Regular, Menlo,
+    monospace;
+
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+}
+
+/*
+ * Monochrome by intent.
+ *
+ * Light is warm white on near black. Dark is warm black on near white. There
+ * is no brand hue: the accent inverts with the theme, so a filled control is
+ * always the maximum contrast against its own surface, and colour is never
+ * carrying meaning that a label should be carrying instead.
+ *
+ * Surfaces are glass rather than fills. Translucency plus a blur is what makes
+ * the page feel layered while scrolling instead of flat, and it is the one
+ * place a backdrop filter is worth its cost: a small, bounded panel.
+ */
+:root {
+  --radius: 0.75rem;
+
+  --background: oklch(0.99 0 0);
+  --foreground: oklch(0.16 0 0);
+
+  --card: oklch(1 0 0 / 0.62);
+  --card-foreground: var(--foreground);
+  --popover: oklch(1 0 0 / 0.86);
+  --popover-foreground: var(--foreground);
+
+  --primary: oklch(0.16 0 0);
+  --primary-foreground: oklch(0.99 0 0);
+
+  --secondary: oklch(0.96 0 0);
+  --secondary-foreground: oklch(0.16 0 0);
+  --muted: oklch(0.965 0 0);
+  --muted-foreground: oklch(0.52 0 0);
+
+  --accent: oklch(0.16 0 0);
+  --accent-foreground: oklch(0.99 0 0);
+
+  --border: oklch(0.16 0 0 / 0.11);
+  --input: oklch(0.16 0 0 / 0.13);
+  --ring: oklch(0.16 0 0 / 0.45);
+  --destructive: oklch(0.55 0.2 27);
+}
+
+.dark {
+  --background: oklch(0.135 0 0);
+  --foreground: oklch(0.97 0 0);
+
+  --card: oklch(1 0 0 / 0.045);
+  --card-foreground: var(--foreground);
+  --popover: oklch(0.19 0 0 / 0.9);
+  --popover-foreground: var(--foreground);
+
+  --primary: oklch(0.97 0 0);
+  --primary-foreground: oklch(0.135 0 0);
+
+  --secondary: oklch(0.2 0 0);
+  --secondary-foreground: oklch(0.97 0 0);
+  --muted: oklch(0.19 0 0);
+  --muted-foreground: oklch(0.66 0 0);
+
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.135 0 0);
+
+  --border: oklch(1 0 0 / 0.11);
+  --input: oklch(1 0 0 / 0.14);
+  --ring: oklch(1 0 0 / 0.5);
+  --destructive: oklch(0.65 0.19 25);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+    /* Anchors animate natively. No scroll library owns the scroll position. */
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  }
+
+  ::selection {
+    background: var(--foreground);
+    color: var(--background);
+  }
+}
+
+/* ── Glass surfaces ──────────────────────────────────────────────────── */
+
+/*
+ * Bounded, small panels only. The header, the hero panel, project rows and
+ * the palette. Never a full width fixed overlay: a permanent backdrop filter
+ * spanning the viewport forces a composited layer and a continuous readback of
+ * everything behind it, which is the most expensive thing on the page.
+ */
+.glass {
+  background: color-mix(in oklab, var(--background) 72%, transparent);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid var(--border);
+}
+
+.glass-strong {
+  background: color-mix(in oklab, var(--background) 86%, transparent);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1px solid var(--border);
+}
+
+.glass-button {
+  background: color-mix(in oklab, var(--background) 60%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border);
+}
+
+/*
+ * The sticky header needs far more opacity than a panel does. It sits over the
+ * densest text on the page and spans the full viewport, so at the 72% of
+ * `.glass` the project rows and chips behind it stay readable and collide with
+ * the nav. 94% keeps the blur and the glass edge while making the seam
+ * invisible.
+ */
+[data-site-chrome] {
+  background: color-mix(in oklab, var(--background) 94%, transparent);
+}
+
+/* Cursor spotlight. The position is a CSS variable written from one shared rAF,
+   so a grid of cards costs a single transform per hovered card, not one
+   listener per card.
+
+   This is the hover treatment for every list row on the site. The sliding top
+   hairline it replaced drew a hard line that read as a divider sliding across
+   the page, competing with the static borders it sat on; a soft pool of light
+   under the cursor says "this one" without adding a mark. */
+.spotlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    220px circle at var(--spot-x, 50%) var(--spot-y, 50%),
+    color-mix(in oklab, var(--foreground) 7%, transparent),
+    transparent 70%
+  );
+  transition: opacity 0.35s ease;
+}
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+/* ── Motion ──────────────────────────────────────────────────────────── */
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/*
+ * One-shot reveal.
+ *
+ * The hidden state is gated on `.js-reveal` being present on <html>, which a
+ * tiny inline script sets. Without that gate the content would sit at opacity 0
+ * whenever JS fails, is slow, or a crawler does not run it — the page would
+ * look empty. With it, no-JS renders everything, fully visible, and the
+ * animation is purely additive.
+ */
+.js-reveal .animate-in-up-on-view {
+  opacity: 0;
+  transform: translateY(18px);
+}
+.js-reveal .animate-in-up-on-view.in-view {
+  animation: 0.5s cubic-bezier(0.22, 1, 0.36, 1) both fade-in-up;
+}
+
+/* Stagger via one shared class plus a per item custom property. */
+.stagger {
+  animation-delay: calc(var(--i, 0) * 60ms);
+}
+
+@keyframes caret-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+.caret {
+  animation: caret-blink 1.1s steps(1) infinite;
+}
+
+/* One shot typewriter for a single hero line. Uses steps so it never animates
+   a layout property, and it finishes and stays put. */
+@keyframes type-in {
+  from {
+    width: 0;
+  }
+  to {
+    width: var(--chars, 30ch);
+  }
+}
+.type-in {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: type-in 1.1s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+.float {
+  animation: float 4.5s ease-in-out infinite;
+  /*
+   * Own compositor layer. The bob animates transform continuously, and without
+   * this the browser repaints the sprite on every frame.
+   */
+  will-change: transform;
+}
+
+/* Pixel art must not be smoothed when it scales. */
+.mascot {
+  image-rendering: pixelated;
+}
+
+/* ── Cursor tracking portrait ───────────────────────────────────────── */
+
+/*
+ * The hero portrait leans toward the pointer. `--rx`, `--ry` and the sheen
+ * position are written from one shared rAF in JS, so this is a transform and a
+ * background position, never a layout property.
+ *
+ * The inner element carries the transform and the outer one the perspective,
+ * because a child cannot rotate its own container out of perspective.
+ */
+.portrait {
+  perspective: 600px;
+}
+
+.portrait-inner {
+  /* Pivoted near the top of the frame so the motion reads as a neck turning
+     rather than the whole portrait tipping like a card. The extra scale hides
+     the corners that a rotated square would otherwise expose. */
+  transform-origin: 50% 22%;
+  transform: translate3d(var(--lx, 0px), var(--ly, 0px), 0)
+    rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) scale(1.04);
+  transition: transform 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+/*
+ * A ring that only exists in dark mode. The photo is cut out onto the page
+ * background, so on paper it already has a clean edge; on near black the dark
+ * shirt and the dark background are the same value and the silhouette
+ * disappears. The ring restores the outline without adding a box in light mode,
+ * where there is nothing to fix.
+ *
+ * Two tones rather than one: a bright inner edge catches the top light and a
+ * dim outer edge keeps the shape from looking like a sticker cut out of paper.
+ */
+.portrait-ring {
+  position: absolute;
+  inset: -7px;
+  border-radius: 9999px;
+  pointer-events: none;
+  display: none;
+}
+
+:where(.dark) .portrait-ring {
+  display: block;
+  /* 2px rather than a hairline: at 96px the ring is only a few pixels wide, so
+     a 1px border at low alpha vanished against the background. */
+  border: 2px solid color-mix(in oklab, var(--foreground) 26%, transparent);
+  box-shadow:
+    inset 0 1px 0 0 color-mix(in oklab, var(--foreground) 12%, transparent),
+    0 0 0 4px color-mix(in oklab, var(--background) 70%, transparent);
+}
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.55;
+    transform: scale(0.82);
+  }
+}
+.breathe {
+  animation: breathe 2.4s ease-in-out infinite;
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 38s linear infinite;
+  will-change: transform;
+}
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+/* ── Type ────────────────────────────────────────────────────────────── */
+
+.micro-label {
+  font-family: var(--font-jetbrains), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  line-height: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--muted-foreground);
+}
+
+.micro-label-jp {
+  font-family: 'Hiragino Sans', 'Yu Gothic', 'Noto Sans JP', Meiryo, sans-serif;
+  letter-spacing: 0.22em;
+}
+
+.text-secondary {
+  color: var(--muted-foreground);
+}
+
+/* ── Controls ────────────────────────────────────────────────────────── */
+
+:where(a, button, [role='button']):focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Background field ────────────────────────────────────────────────── */
+
+/* A very quiet blueprint field. Fixed, transform only, no repaint per scroll. */
+.field {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image: linear-gradient(
+      to right,
+      color-mix(in oklab, var(--foreground) 4%, transparent) 1px,
+      transparent 1px
+    ),
+    linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--foreground) 4%, transparent) 1px,
+      transparent 1px
+    );
+  background-size: 56px 56px;
+  mask-image: radial-gradient(ellipse 90% 60% at 50% 0%, black, transparent 75%);
+  -webkit-mask-image: radial-gradient(
+    ellipse 90% 60% at 50% 0%,
+    black,
+    transparent 75%
+  );
+}
+
+@media (pointer: coarse) {
+  .marquee-track {
+    animation: none;
+  }
+}
+
+/* ── Reduced motion ──────────────────────────────────────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .js-reveal .animate-in-up-on-view {
+    opacity: 1;
+    transform: none;
+  }
+  .type-in {
+    width: auto;
+  }
+}

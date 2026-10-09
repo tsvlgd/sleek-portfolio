@@ -1,0 +1,85 @@
+---
+title: 'RL Code Review Environment'
+description: 'A Gym-style reinforcement learning environment that trains a coding agent on code review through a three-tier curriculum: PEP8 hygiene, shell-injection security, then structural complexity.'
+tagline: 'A reinforcement-learning curriculum for code-review agents'
+period: '2026'
+role: 'Author'
+stack: ['Python', 'OpenEnv', 'Ruff', 'Qwen-2.5-Coder', 'Docker']
+status: 'live'
+github: 'https://github.com/tsvlgd/rl-agent'
+live: 'https://huggingface.co/spaces/imsavvylegend/rl-code-review-agent'
+featured: true
+challenges: [
+  'Reward shaping across two objectives',
+  'Curriculum progression',
+  'Preventing reward hacking',
+]
+learnings: [
+  'A scalar reward hides a lot of design decisions',
+  'Identity checks stop reward hacking',
+  'Rule selection is part of the task definition',
+]
+isPublished: true
+---
+
+## Overview
+
+A custom RL environment where an agent's action is the full corrected Python
+source for a messy file. It is a curriculum, not a single task: the environment
+starts with PEP8 hygiene, moves to shell-injection security, then to structural
+complexity, advancing automatically once a stage is cleared at a 0.95 reward. It
+runs as a Hugging Face Space with a Qwen-2.5-Coder 7B baseline agent, containerised
+with Docker.
+
+## How it works
+
+Built against OpenEnv's `Environment` interface, with `reset` and `step` returning
+an observation of `messy_code`, `feedback` and a scalar `reward` between 0 and 1.
+`MAX_STEPS = 10` bounds an episode.
+
+Reward blends two objectives equally:
+
+- **Functional score** — the fraction of unit tests the submitted function
+  passes.
+- **Quality score** — Ruff static analysis with a per-violation penalty.
+
+Both are gated by an AST-based structural identity check. The submitted code is
+parsed and compared against the original: the target function must still exist
+under the same name and the argument count must be unchanged. Identity is a
+multiplier on the total, not a bonus, so an agent cannot pass by deleting the
+function, renaming it, or widening its signature. That check is the main defence
+against the obvious reward hack here.
+
+The quality half is stage-specific, which makes the rule selection part of the
+task definition rather than a constant:
+
+- `easy` selects `E,W,F` — pycodestyle errors and warnings plus Pyflakes.
+- `medium` selects `S602` — the Bandit rule for `subprocess` calls with
+  `shell=True`.
+- `hard` selects `C901` with McCabe max complexity forced to 3.
+
+On the security stage the penalty is binary: any `S602` hit scores zero quality.
+On the other two it decays by 0.1 per violation. The raw total is rescaled into
+`(0, 1)` so partial credit is always strictly positive.
+
+## What made it non-trivial
+
+- Two objectives on one scalar. Tests-passing and lint-clean are different
+  signals, and weighting them evenly means neither can be optimised alone.
+- Without the identity gate, deleting or renaming the target function trivially
+  satisfies the tests.
+- Advancing the curriculum resets state to the new task's original code, so the
+  agent cannot carry a fixed solution across stage boundaries.
+- Ruff is invoked as a subprocess against stdin with JSON output, so lint
+  failures have to be handled without taking the episode down.
+
+## What I learned
+
+- The reward function is the environment. Everything interesting — stage gating,
+  rule selection, the identity multiplier — is shaping, not mechanics.
+- Verifying structure via the AST is cheap and blocks the most obvious exploit.
+- Stage-specific rule selection doubles as curriculum: the agent never sees two
+  different kinds of "quality" at the same time.
+- The baseline agent clears the curriculum in four steps once it stops making
+  edits that break the tests, which is a useful sanity check that the reward is
+  not unpassable.

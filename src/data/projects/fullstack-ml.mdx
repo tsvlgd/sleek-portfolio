@@ -1,0 +1,86 @@
+---
+title: 'Full Stack ML'
+description: 'An end-to-end churn prediction system: Great Expectations validation, feature engineering, XGBoost with class-imbalance handling, MLflow tracking, a FastAPI inference service and a Gradio UI.'
+tagline: 'From raw data to a served, tracked model'
+period: '2026'
+role: 'Author'
+stack: ['Python', 'XGBoost', 'MLflow', 'FastAPI', 'Docker', 'Actions']
+status: 'live'
+github: 'https://github.com/tsvlgd/fullstack-ML'
+live: 'https://huggingface.co/spaces/imsavvylegend/TelcoChurn-ML-Demo'
+featured: true
+challenges: [
+  'Training/serving feature parity',
+  'Validating data before training',
+  'Imbalanced churn labels',
+]
+learnings: [
+  'Shipping the feature list is part of the model',
+  'Validation failures belong in the metrics store',
+  'The threshold is a product decision, not a metric',
+]
+isPublished: true
+---
+
+## Overview
+
+A complete telecom churn prediction system, built to cover the whole path rather
+than just the modelling step. Raw CSV goes through validation, preprocessing and
+feature engineering, into a tracked XGBoost training run, and comes out as a
+FastAPI service with a Gradio front end and a container pipeline behind it.
+
+## How it works
+
+`scripts/run_pipeline.py` runs the stages sequentially: load, validate,
+preprocess, engineer features, split, train, evaluate.
+
+Validation runs first, through Great Expectations. It is not a smoke test — it
+asserts that required columns exist, that categorical fields hold only expected
+values (`gender` in `Male`/`Female`, `Contract` in the three real contract
+types), and that numeric ranges are sane. If any expectation fails the run stops
+and the failed expectations are written to an MLflow artifact.
+
+Feature engineering splits categorical columns by cardinality. Two-value columns
+get deterministic binary encoding with hardcoded `Yes`/`No` and
+`Male`/`Female` maps; everything else falls to one-hot encoding. Anything above
+two categories is left to one-hot, which is the only part of the pipeline where
+the column set can change shape.
+
+Training is XGBoost with imbalance handled explicitly. The split is stratified,
+and `scale_pos_weight` is computed as the ratio of majority to minority class in
+the training set, so the minority (churners) counts more in the loss. Precision,
+recall, F1, ROC AUC and train/predict timings are all logged to MLflow, along
+with the input dataset registered via `mlflow.data.from_pandas`.
+
+Evaluation is at a threshold of 0.35 rather than 0.5. A retention model that
+misses churners is more expensive than one that flags too many, and the threshold
+is logged as a parameter so it is visible in the MLflow UI next to the metrics it
+produced.
+
+Serving is the part that actually needed care. The exact feature column order is
+written to `feature_columns.txt` in the run and reloaded at inference time, the
+binary mappings are duplicated verbatim in the serving module, and the model is
+loaded through `mlflow.pyfunc` so the container does not depend on the
+underlying estimator's serialisation format.
+
+Deployment is GitHub Actions → Docker build → DockerHub → ECS, with the load
+balancer health check hitting the API root.
+
+## What made it non-trivial
+
+- Training/serving skew. If the serving pipeline derives its columns even
+  slightly differently, every prediction is wrong in a way no metric will show.
+- Validated data still needs validation recorded — the pass/fail flag is logged as
+  `data_quality_pass` so a regression is visible across runs.
+- Class imbalance plus a fixed threshold compounds: the model and the decision
+  boundary both have to be tuned or the majority class wins by default.
+
+## What I learned
+
+- The feature list is part of the model. Persisting column order and encoding
+  maps as artifacts turned an invisible class of bug into a load-time failure.
+- Validation belongs in the pipeline, not in a notebook you re-run by hand.
+- Choosing the decision threshold is a product decision; recording it next to the
+  metrics is what makes an experiment reproducible.
+- Logging the input dataset, not just the model, is what makes an MLflow run
+  auditable months later.

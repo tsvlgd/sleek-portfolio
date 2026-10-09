@@ -1,0 +1,80 @@
+---
+title: 'VedaAI'
+description: 'A vision-LLM assessment extraction pipeline that turns a printed question paper and a handwritten answer sheet into normalised bounding boxes and a dual-pane grading review UI.'
+tagline: 'Vision-LLM assessment extraction and grading'
+period: '2026'
+role: 'Full-stack engineer'
+stack: ['TypeScript', 'Next.js', 'Gemini', 'Groq', 'Zod', 'pdf.js']
+status: 'live'
+github: 'https://github.com/tsvlgd/veda-ai'
+live: 'https://veda-ai-eagu.onrender.com'
+featured: true
+challenges: [
+  'Coordinate-accurate highlight overlays',
+  'Validating stochastic model output',
+  'Surviving primary provider outages',
+]
+learnings: [
+  'A schema is the boundary between a model and a UI',
+  'Overlays need a DOM you control',
+  'Fallbacks trade accuracy for availability',
+]
+isPublished: true
+---
+
+## Overview
+
+A teacher uploads a printed question paper and a handwritten answer sheet. VedaAI
+sends both PDFs straight to a vision LLM, which extracts the questions, maps each
+handwritten answer back to the question it belongs to, and returns normalised
+bounding boxes. The grader then reviews everything in a dual-pane workspace: the
+extracted question list on one side, the answer sheet with the matching region
+highlighted in place on the other.
+
+## How it works
+
+The raw PDF byte buffers go to Gemini Flash directly, with no OCR pre-processing
+step. That preserves spatial relationships a text-only OCR pass destroys —
+handwritten diagrams, inline marginalia — at the cost of a larger token payload
+per request, which is why a 60 second request timeout exists.
+
+Model output is coerced to a JSON string and then parsed through a single Zod
+schema (`lib/schemas.ts`) that acts as the contract between the AI layer and the
+UI. It enforces three shapes: `questions` with IDs, text and original sub-part
+labels; `mappings` with the answer text, a confidence score, feedback and
+coordinates; and `coordinates` as `[xmin, ymin, xmax, ymax, page]` tuples, which
+supports answers that span multiple pages without a second rendering path.
+
+Rendering is deliberately not the native browser PDF widget. `pdfjs-dist` renders
+each page client-side into a canvas-backed image, converted to an immutable blob
+URL. A native `<object>` or `<iframe>` embed owns internal scroll and zoom state
+that the DOM cannot observe, so absolutely positioned SVG rectangles drift out of
+alignment the moment the user scrolls. A standard `<img>` gives exact dimensional
+control.
+
+Provider failure is handled with a cascading fallback. If Gemini returns a 503
+during high demand, the pipeline runs the buffers through `pdf-parse` for text,
+sends that to a LLaMA model on Groq, and maps the result back into the same Zod
+schema so the UI never sees a different shape.
+
+## What made it non-trivial
+
+- Vision LLMs are stochastic. Without a validation checkpoint a malformed payload
+  crashes the review UI rather than degrading.
+- Highlight boxes are a coordinate-systems problem before they are an AI problem.
+- A single provider endpoint is a single point of failure.
+- Real answer sheets are messy: unanswered questions, out-of-order work, and
+  handwriting that maps to no known question (`questionId: null`).
+
+## What I learned
+
+- A schema is the real interface between a model and a UI. Normalised
+  percentage coordinates made the highlight layer independent of page size.
+- Unanswered questions should be derived from the absence of a mapping rather
+  than tracked as separate state — one source of truth, no drift.
+- Ephemeral state was a deliberate choice: files stream per request and are
+  discarded, which removes storage infrastructure entirely at the cost of losing
+  sessions on refresh.
+- Recording six ADRs mattered more than expected. Three decisions (API routes
+  over Server Actions, Zod contract, provider fallback) each had a non-obvious
+  reason that would otherwise have been re-litigated.

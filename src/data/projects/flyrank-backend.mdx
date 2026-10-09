@@ -1,0 +1,79 @@
+---
+title: 'FlyRank Backend'
+description: 'The async task API I build at FlyRank AI: FastAPI handlers over psycopg with connection pooling, Alembic migrations on container boot, and a dual-dependency readiness probe.'
+tagline: 'Async task API — the system behind the current role'
+period: '2026'
+role: 'Backend engineering trainee'
+stack: ['Python', 'FastAPI', 'PostgreSQL', 'Redis', 'Alembic', 'Docker']
+status: 'active'
+github: 'https://github.com/tsvlgd/flyrank-backend'
+featured: true
+challenges: [
+  'Async connection lifecycle',
+  'Schema drift across environments',
+  'Testing against a real database',
+]
+learnings: [
+  'A pool opened in a lifespan handler is the whole async story',
+  'Migrations on boot remove a class of deploy bugs',
+  'Integration tests need isolation, not mocks',
+]
+isPublished: true
+---
+
+## Overview
+
+A task management REST API built as the primary work of my backend engineering
+trainee role at FlyRank AI. It covers CRUD, SQL-level search, filter and
+aggregation, and it is deliberately built the way production services are:
+asynchronous end to end, with schema versioning, health probing and integration
+tests that run against a real database.
+
+## How it works
+
+Every route handler is `async def`, and every database call goes through
+`psycopg`'s async interface rather than a sync driver on a thread pool. The pool
+is an `AsyncConnectionPool` created in the FastAPI lifespan handler with
+`min_size=2`, `max_size=10` and `open=False`, then explicitly awaited with
+`pool.open()` so startup fails loudly instead of on first request. Handlers
+acquire connections from the pool per request and hand them back on exit.
+
+Search, filtering and aggregation are pushed into SQL rather than done in Python.
+`/tasks` supports an `ILIKE` search parameter and a `done` filter, built as a
+parameterised query with an accumulating condition list. `/stats` does
+`COUNT(*)` plus a `SUM(CASE WHEN done THEN 1 ELSE 0 END)` in a single round trip
+and derives the incomplete count from the difference. Uniqueness is enforced in
+the database: `UNIQUE` on `title` with `ON CONFLICT DO NOTHING`, so duplicate
+seeds are a no-op rather than an application-level check.
+
+Migrations run at container boot. The API container executes `alembic upgrade
+head` before starting the server, which means the schema is never behind the
+code. Redis is wired into the `/health` probe alongside Postgres, so readiness
+reflects both dependencies; Redis is optional at startup and the client is
+downgraded to `None` if the ping fails rather than blocking boot.
+
+Tests use pytest with HTTPX against a separate `tasks_test` database. The
+fixture runs Alembic programmatically before the session and truncates the table
+between tests, so there is no shared-state flakiness.
+
+## What made it non-trivial
+
+- `open=False` plus an awaited `open()` looks redundant and is not: it makes pool
+  startup explicit and keeps the ordering between migrations, seeding and the
+  first request deterministic.
+- Building SQL dynamically means the parameter list and the condition list have
+  to stay in sync; a mistake there is a 500, not a wrong result.
+- Async integration tests need their own database. Pointing them at the dev
+  database is how you end up truncating something you did not mean to.
+
+## What I learned
+
+- The readiness probe is the cheapest useful piece of infrastructure in the
+  stack. Covering two dependencies instead of one caught real ordering problems.
+- Migrations on boot removed a category of "works locally, 500s in staging" bugs
+  that no amount of application code would have.
+- Pydantic validators plus database constraints beat either one alone: validation
+  returns a useful 400, the constraint is the actual guarantee.
+- Auth is next. The plan is Supabase as the identity provider with JWT
+  verification as a FastAPI dependency, plus Redis rate limiting — deliberately
+  not rolling our own cryptography.

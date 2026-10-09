@@ -1,0 +1,76 @@
+---
+title: 'Agentic Patterns'
+description: 'The four agentic patterns — reflection, tool use, ReAct planning and multi-agent — implemented directly against the Groq API with no orchestration framework.'
+tagline: 'Reflection, tool use, ReAct and multi-agent — no framework'
+period: '2025'
+role: 'Author'
+stack: ['Python', 'Groq', 'ReAct', 'Reflection']
+status: 'live'
+github: 'https://github.com/tsvlgd/agentic-patterns'
+featured: false
+challenges: [
+  'Parsing model output into tool calls',
+  'Loop termination',
+  'Agent dependency ordering',
+]
+learnings: [
+  'The loop is the abstraction, not the API call',
+  'A DAG is enough for multi-agent',
+  'Readability is the point',
+]
+isPublished: true
+---
+
+## Overview
+
+An implementation of the four agentic patterns described in Andrew Ng's
+DeepLearning.AI series, built directly on the Groq API. No LangChain, no
+LangGraph, no LlamaIndex, no CrewAI. Each pattern is a small package with a
+notebook that walks through it and a full implementation to read afterwards.
+
+## How it works
+
+**Reflection** is the simplest pattern and the one that still surprises: the
+model produces a draft, then produces critique of that draft, then revises from
+the critique. The loop is just repeated calls with different system prompts.
+
+**Tool use** gives the model access to the outside world. Tools are plain
+functions with typed signatures and docstrings; the model emits a call, the
+agent dispatches it, and the result goes back in as an observation. The `Tool`
+class handles the mechanics so the agent logic stays readable.
+
+**Planning** is implemented as ReAct, extending the tool agent with explicit
+reasoning about which step comes next. The agent interleaves thought, action and
+observation, keeps the running transcript as its state, and stops when it produces
+a final answer rather than another tool call. Tool-call parsing is the part that
+needs care: the output has to be distinguished from a final answer reliably, or
+the loop never terminates.
+
+**Multi-agent** splits a task across specialised agents. Each agent has a name, a
+backstory, a task description and an expected output. Dependencies are expressed
+with the `>>` operator, borrowed from Airflow, which makes the crew an explicit
+DAG rather than an implicit conversation. `crew.plot()` renders it. An agent with
+tools can hand a file to the next one, so the pipeline can carry state, not just
+text.
+
+The package installs with Poetry or `pip install agentic-patterns`; notebooks
+import from `agentic_patterns` and everything runs against Groq with an API key
+in `.env`.
+
+## What made it non-trivial
+
+- Distinguishing a tool call from prose reliably enough to end the loop. Getting
+  this wrong produces either an infinite loop or a dropped action.
+- Reflection needs a stopping condition, otherwise the model critiques a
+  revision until it degrades.
+- Multi-agent without a framework means you own the scheduling. Expressing
+  dependencies as a DAG is the smallest thing that works.
+
+## What I learned
+
+- The mechanism in every agent framework is a loop plus a dispatch table. Writing
+  it out makes the abstractions feel arbitrary, which is the point.
+- A DAG expressed with `>>` is more legible than an implicit handoff, and it
+  makes the crew debuggable.
+- Tools are ordinary functions. The interesting constraint is not what a tool can
+  do, it is what the model is reliably able to emit.
