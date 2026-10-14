@@ -1,13 +1,14 @@
 export interface NavItem {
   label: string;
-  href: string;
   /**
-   * Absolute URL. Renders as a plain anchor and leaves the app, so it is not a
-   * client transition and `usePathname` cannot mark it active. Needed for the
-   * resume, which lives on its own host.
+   * A route on this site. Absolute URLs are accepted and render as a plain
+   * anchor, which leaves the app rather than routing inside it.
    */
-  external?: boolean;
+  href: string;
 }
+
+/** The resume route on the site. Also the page the resume host serves. */
+const RESUME_ROUTE = '/resume';
 
 /**
  * Single source of truth for site navigation.
@@ -26,17 +27,31 @@ export const navbarConfig = {
    * No "Home" entry: the `~/ mehfooj` mark on the left already links to the
    * root, so a Home item next to it would be a second control for one target.
    *
-   * Resume points at its own host rather than at /resume. That subdomain serves
-   * the resume and nothing else, and it is the address worth handing to a
-   * recruiter, who will read resume.mehfooj.dev as the canonical one rather than
-   * as a route inside a site they then have to navigate.
+   * Resume is a route on this site, not the subdomain. `resume.mehfooj.dev`
+   * exists so the bare address renders a resume for a recruiter who types it
+   * into a browser, and it still serves the same page, but navigation that
+   * points there hands someone a second origin to reason about for no gain. On
+   * the resume host this entry is resolved to the site's own copy by
+   * `HostLink`, so it never points at the host the visitor is standing on.
    */
   navItems: [
     { label: 'Work', href: '/work-experience' },
     { label: 'Projects', href: '/projects' },
-    { label: 'Resume', href: 'https://resume.mehfooj.dev', external: true },
+    { label: 'Resume', href: RESUME_ROUTE },
     { label: 'Contact', href: '/contact' },
   ] as NavItem[],
 };
+
+/**
+ * The nav for the host being served.
+ *
+ * On the resume host the resume is the entire site, so an entry for it would be
+ * a control for the page already on screen. Dropping it leaves the list honest
+ * about where the visitor is.
+ */
+export function navItemsForHost(onResumeHost: boolean): NavItem[] {
+  if (!onResumeHost) return navbarConfig.navItems;
+  return navbarConfig.navItems.filter((item) => item.href !== RESUME_ROUTE);
+}
 
 export type NavbarConfig = typeof navbarConfig;

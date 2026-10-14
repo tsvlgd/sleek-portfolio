@@ -1,7 +1,7 @@
+import { HostLink } from '@/components/common/HostLink';
 import { ResumeViewer } from '@/components/resume/ResumeViewer';
 import { heroEmail } from '@/config/Hero';
 import type { Metadata } from 'next';
-import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Resume',
@@ -88,9 +88,12 @@ export default function ResumePage() {
           email
         </a>
         . A longer account of the work lives on the{' '}
-        <Link href="/work-experience" className="text-accent hover:underline">
+        <HostLink
+          href="/work-experience"
+          className="text-accent hover:underline"
+        >
           work page
-        </Link>
+        </HostLink>
         .
       </p>
     </div>

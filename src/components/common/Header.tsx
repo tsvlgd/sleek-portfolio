@@ -1,13 +1,14 @@
 'use client';
 
-import { NavItem, navbarConfig } from '@/config/Navbar';
+import { NavItem, navItemsForHost } from '@/config/Navbar';
+import { useResumeHost } from '@/lib/useResumeHost';
 import { cn } from '@/lib/utils';
 import { Menu, Search, X } from 'lucide-react';
-import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 import { CommandPalette } from './CommandPalette';
+import { HostLink } from './HostLink';
 import { ThemeToggleButton } from './ThemeSwitch';
 
 /**
@@ -49,51 +50,41 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [paletteOpen, setPaletteOpen] = useState(false);
 
+  /**
+   * The resume host serves the resume and nothing else, and the middleware
+   * rewrites every route there back to it. Every in-app link below therefore has
+   * to be resolved against the host being served, or it becomes a control that
+   * redraws the same page.
+   */
+  const onResumeHost = useResumeHost();
+  const navItems = navItemsForHost(onResumeHost);
+
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
 
   const isActive = (item: NavItem) =>
-    item.external
-      ? false
-      : item.href === '/'
-        ? pathname === '/'
-        : pathname.startsWith(item.href);
+    item.href === '/' ? pathname === '/' : pathname.startsWith(item.href);
 
   /**
    * One nav entry.
    *
-   * External items render as a plain anchor, because `next/link` on an absolute
-   * URL does a full page load to a different origin anyway while still running
-   * the client router's intercept logic against a URL it does not own. They can
-   * never be active: `usePathname` only ever returns a path, and the resume
-   * lives on another host.
+   * `HostLink` decides between a client transition and a plain anchor, and it
+   * resolves the destination against the host being served. Nothing here needs
+   * to know which host that is.
    */
   const NavLink = ({ item, active }: { item: NavItem; active: boolean }) => {
     const className =
       'group text-muted-foreground hover:text-foreground shrink-0 text-sm transition-colors';
 
-    if (item.external) {
-      return (
-        <a
-          href={item.href}
-          className={className}
-          rel="noopener noreferrer"
-          target="_blank"
-        >
-          <RollingLabel label={item.label} active={false} />
-        </a>
-      );
-    }
-
     return (
-      <Link
+      <HostLink
         href={item.href}
         className={className}
         aria-current={active ? 'page' : undefined}
       >
         <RollingLabel label={item.label} active={active} />
-      </Link>
+      </HostLink>
     );
   };
 
@@ -111,8 +102,11 @@ export default function Header() {
               only appears once opened, so on a phone there was no way back to
               the home page from any other route without opening a menu first.
               At 390px this still fits beside the theme toggle and hamburger.
+
+              On the resume host the root is not home, it is the resume already
+              on screen, so `HostLink` sends this mark to the site instead.
             */}
-            <Link
+            <HostLink
               href="/"
               className="text-muted-foreground hover:text-foreground flex shrink-0 items-center gap-1 text-sm font-semibold tracking-tight transition-colors"
               aria-label="Mehfooj Alam, home"
@@ -121,12 +115,12 @@ export default function Header() {
                 ~/
               </span>
               mehfooj
-            </Link>
+            </HostLink>
 
             {/* One row, never wraps. Short labels, tight gap, shrink to zero
                 rather than stacking the list vertically. */}
             <nav className="hidden min-w-0 shrink items-center gap-4 sm:flex lg:gap-6">
-              {navbarConfig.navItems.map((item) => (
+              {navItems.map((item) => (
                 <NavLink key={item.href} item={item} active={isActive(item)} />
               ))}
             </nav>
@@ -174,7 +168,7 @@ export default function Header() {
                 list of destinations, and leaving the root out of it made the
                 omission inconsistent rather than deliberate.
               */}
-              <Link
+              <HostLink
                 href="/"
                 onClick={() => setMobileOpen(false)}
                 className={cn(
@@ -186,8 +180,8 @@ export default function Header() {
                 aria-current={pathname === '/' ? 'page' : undefined}
               >
                 Home
-              </Link>
-              {navbarConfig.navItems.map((item) => {
+              </HostLink>
+              {navItems.map((item) => {
                 const className = cn(
                   'hover:bg-muted rounded-lg px-3 py-2.5 text-sm transition-colors',
                   isActive(item)
@@ -195,25 +189,16 @@ export default function Header() {
                     : 'text-muted-foreground',
                 );
 
-                return item.external ? (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    className={className}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                  >
-                    {item.label}
-                  </a>
-                ) : (
-                  <Link
+                return (
+                  <HostLink
                     key={item.href}
                     href={item.href}
                     className={className}
                     aria-current={isActive(item) ? 'page' : undefined}
+                    onClick={() => setMobileOpen(false)}
                   >
                     {item.label}
-                  </Link>
+                  </HostLink>
                 );
               })}
             </nav>

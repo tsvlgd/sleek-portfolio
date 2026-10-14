@@ -1,9 +1,20 @@
+'use client';
+
 import { footerConfig } from '@/config/Footer';
 import { socialLinks } from '@/config/Hero';
-import { navbarConfig } from '@/config/Navbar';
-import Link from 'next/link';
+import { navItemsForHost } from '@/config/Navbar';
+import { useResumeHost } from '@/lib/useResumeHost';
+
+import { HostLink } from './HostLink';
 
 export default function Footer() {
+  /**
+   * The same rule as the header: on the resume host every site path is rewritten
+   * back to the resume, so the footer has to point at the site instead of at
+   * routes that no longer exist there.
+   */
+  const onResumeHost = useResumeHost();
+
   return (
     <footer
       data-site-chrome=""
@@ -14,27 +25,15 @@ export default function Footer() {
           <div>
             <p className="micro-label">Navigate</p>
             <nav className="mt-3 flex flex-wrap gap-x-5 gap-y-1.5">
-              {navbarConfig.navItems.map((item) =>
-                item.external ? (
-                  <a
-                    key={item.href}
-                    href={item.href}
-                    rel="noopener noreferrer"
-                    target="_blank"
-                    className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-                  >
-                    {item.label}
-                  </a>
-                ) : (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="text-muted-foreground hover:text-foreground text-sm transition-colors"
-                  >
-                    {item.label}
-                  </Link>
-                ),
-              )}
+              {navItemsForHost(onResumeHost).map((item) => (
+                <HostLink
+                  key={item.href}
+                  href={item.href}
+                  className="text-muted-foreground hover:text-foreground text-sm transition-colors"
+                >
+                  {item.label}
+                </HostLink>
+              ))}
             </nav>
           </div>
 

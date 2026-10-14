@@ -1,7 +1,9 @@
 'use client';
 
 import { socialLinks } from '@/config/Hero';
-import { navbarConfig } from '@/config/Navbar';
+import { resolveHref } from '@/config/Hosts';
+import { navItemsForHost } from '@/config/Navbar';
+import { useResumeHost } from '@/lib/useResumeHost';
 import { Command } from 'cmdk';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
@@ -29,6 +31,7 @@ export function CommandPalette({
   const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
+  const onResumeHost = useResumeHost();
 
   // cmdk touches the DOM on mount; wait until after paint to avoid SSR mismatch.
   useEffect(() => {
@@ -66,18 +69,24 @@ export function CommandPalette({
   };
 
   const entries: PaletteEntry[] = [
-    ...navbarConfig.navItems.map((item) => ({
-      label: item.label,
-      // The resume lives on another host, so routing through the client router
-      // would only produce a failed push. Open it the way the header does.
-      hint: item.external ? 'external' : 'page',
-      perform: item.external
-        ? () => {
-            onOpenChange(false);
-            window.open(item.href, '_blank', 'noopener,noreferrer');
-          }
-        : go(item.href),
-    })),
+    ...navItemsForHost(onResumeHost).map((item) => {
+      // On the resume host every site path resolves to the main origin, so the
+      // palette opens it the way the header does rather than pushing a route
+      // that the middleware would rewrite straight back to the resume.
+      const href = resolveHref(item.href, onResumeHost);
+      const leavesSite = !href.startsWith('/');
+
+      return {
+        label: item.label,
+        hint: leavesSite ? 'external' : 'page',
+        perform: leavesSite
+          ? () => {
+              onOpenChange(false);
+              window.open(href, '_blank', 'noopener,noreferrer');
+            }
+          : go(href),
+      };
+    }),
     ...socialLinks.map((link) => ({
       label: link.name,
       hint: 'external',

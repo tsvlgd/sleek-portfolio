@@ -1,3 +1,4 @@
+import { RESUME_HOST } from '@/config/Hosts';
 import type { NextRequest } from 'next/server';
 import { NextResponse } from 'next/server';
 
@@ -37,8 +38,6 @@ const PASSTHROUGH = [
   '/sitemap',
   '/manifest',
 ];
-
-export const RESUME_HOST = 'resume.mehfooj.dev';
 
 /**
  * The raw Host header rather than `nextUrl.hostname`.

@@ -49,13 +49,24 @@ type PdfDoc = {
   getPage: (pageNumber: number) => Promise<PdfPage>;
 };
 
-const MIN_SCALE = 0.5;
+/**
+ * Opens at half size.
+ *
+ * A letter page at 100% is 612 px wide and taller than the viewport, so the
+ * visitor landed on a scrollbar inside a page that was already a scroll. Half
+ * size is the whole sheet at a glance, at every width, and reading is one click
+ * of zoom away rather than the first thing standing between the visitor and the
+ * content.
+ */
+const DEFAULT_SCALE = 0.5;
+
+const MIN_SCALE = 0.25;
 const MAX_SCALE = 3;
 
 export function ResumeViewer({ src, title }: { src: string; title: string }) {
   const [doc, setDoc] = useState<PdfDoc | null>(null);
   const [page, setPage] = useState(1);
-  const [scale, setScale] = useState(1);
+  const [scale, setScale] = useState(DEFAULT_SCALE);
   const [error, setError] = useState<string | null>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const renderTask = useRef<{ cancel?: () => void } | null>(null);

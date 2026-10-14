@@ -49,6 +49,12 @@ CI (`.github/workflow/lint.yml` — note singular `workflow`) on PRs to `main`: 
 
 `src/app/api/contact` — zod-validated POST → Telegram. In-memory per-IP rate limit (5/min): per-instance, resets on deploy, not a security control.
 
+### Two hosts, one build
+
+`src/middleware.ts` rewrites every page route on `resume.mehfooj.dev` to `/resume`, so that host serves the resume and nothing else. The same route also exists at `mehfooj.dev/resume`, and navigation points there rather than at the subdomain.
+
+The consequence for links: on the resume host, `next/link` to `/`, `/projects` or any site path is a dead control, because the rewrite hands the visitor the page they are already on. Use `HostLink` (`src/components/common/HostLink.tsx`) instead of `Link` anywhere a site path can appear in shared chrome or in the resume page itself; it prefixes the main origin when the resume host is serving. `navItemsForHost` in `src/config/Navbar.tsx` drops the Resume entry there.
+
 ## Agent workflow
 
 - Plan and ask before building. This repo's design language is opinionated; guessing produces something off-system.
