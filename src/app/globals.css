@@ -440,3 +440,12 @@
     width: auto;
   }
 }
+/* First paint cover for the home page intro (see PageBuild.tsx). The real page
+   stays underneath so the engine can measure it. */
+html[data-swarm-init='true']::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 2147483640;
+  background: var(--background);
+}

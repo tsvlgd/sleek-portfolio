@@ -44,3 +44,4 @@ next-env.d.ts
 # agent / browser-testing scratch output
 audit/
 .playwright-mcp/
+memory/

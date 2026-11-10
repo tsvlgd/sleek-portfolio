@@ -10,6 +10,7 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  { ignores: ["public/swarm-engine.js"] },
   ...compat.extends("next/core-web-vitals", "next/typescript"),
 ];
 

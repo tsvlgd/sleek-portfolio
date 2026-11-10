@@ -1,6 +1,7 @@
 import UmamiAnalytics from '@/components/analytics/UmamiAnalytics';
 import Footer from '@/components/common/Footer';
 import Header from '@/components/common/Header';
+import { PageBuild } from '@/components/common/PageBuild';
 import { ScrollTopButton } from '@/components/common/ScrollTopButton';
 import { SmoothScroll } from '@/components/common/SmoothScroll';
 import { SpotlightProvider } from '@/components/common/SpotlightProvider';
@@ -48,6 +49,16 @@ export default function RootLayout({
             __html: `document.documentElement.classList.add('js-reveal')`,
           }}
         />
+        {/*
+          Raises the first paint cover for the home page intro (PageBuild).
+          Same conditions as PageBuild; if they drift apart the worst case is a
+          cover that PageBuild removes on mount.
+        */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `try{var r=document.documentElement,p=location.pathname,b=JSON.parse(sessionStorage.getItem('portfolio-built-paths-v1')||'[]');if(p==='/'&&!location.hostname.startsWith('resume.')&&!matchMedia('(prefers-reduced-motion: reduce)').matches&&!(Array.isArray(b)&&b.indexOf(p)>-1)){r.setAttribute('data-swarm-init','true');r.setAttribute('data-swarm-building','true')}}catch(e){}`,
+          }}
+        />
       </head>
       <body
         className={`${inter.variable} ${jetbrains.variable} font-sans antialiased`}
@@ -70,6 +81,7 @@ export default function RootLayout({
           <div aria-hidden="true" className="field" />
 
           <SpotlightProvider />
+          <PageBuild />
 
           <SmoothScroll>
             <Header />
